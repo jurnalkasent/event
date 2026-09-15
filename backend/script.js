@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbzCIw3zrEXlg3pPkpRjThfTddReIY5Zfs7RKkkVGcdD8pAZeRqsyF4dZZbIZ0kO1Jqj/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzkxl3nY008AYmLAZD3GfkFY7AwD8Fx-Bd8Ys4h4q03-JHq3uyus_QaUHphz5SumX7FBw/exec';
 
 const App = {
   tokenKey: 'jurnal_kasent_token',
@@ -20,7 +20,19 @@ const App = {
         })
       });
 
-      const result = await response.json();
+      const responseText = await response.text();
+      let result;
+
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        return {
+          success: false,
+          message: response.ok
+            ? 'Server tidak mengembalikan JSON. Pastikan deployment Apps Script memakai doGet/doPost terbaru.'
+            : `Server API error (${response.status}). Periksa deployment Apps Script.`
+        };
+      }
 
       if (!result.success && result.message === 'Sesi tidak valid') {
         this.logout();
@@ -61,6 +73,25 @@ const App = {
     }
   },
 
+  async validateSession() {
+    const token = this.getToken();
+    const user = this.getUser();
+
+    if (!token || !user) return false;
+
+    const result = await this.dashboard();
+    return !!(result && result.success);
+  },
+
+  publicPath() {
+    const pathname = decodeURIComponent(window.location.pathname);
+
+    return pathname.includes('/admin event/') ||
+      pathname.includes('/master admin/')
+      ? '../index.html'
+      : 'index.html';
+  },
+
   logout() {
     const token = this.getToken();
 
@@ -80,7 +111,7 @@ const App = {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
 
-    window.location.href = 'index.html';
+    window.location.href = this.publicPath();
   },
 
   requireLogin(role = '') {
@@ -88,12 +119,12 @@ const App = {
     const user = this.getUser();
 
     if (!token || !user) {
-      window.location.href = 'index.html';
+      window.location.href = this.publicPath();
       return false;
     }
 
     if (role && user.role !== role && user.role !== 'master') {
-      window.location.href = 'index.html';
+      window.location.href = this.publicPath();
       return false;
     }
 

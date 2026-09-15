@@ -1,5 +1,6 @@
 const CONFIG = {
   ROOT_FOLDER_ID: '1EcGy_R6cn2IZbc-9xr9OiTeNuq9Zr6dA',
+  SPREADSHEET_ID: '1VuwMcr6Tmz8Q4OKxXJuXBhVlU4yXTdaUE9v6EPhiUkY',
   SPREADSHEET_NAME: 'JURNAL_KASENT_DATABASE',
   TIMEZONE: 'Asia/Makassar',
   MASTER_USERNAME: 'Keeki',
@@ -437,21 +438,25 @@ function setupDatabase() {
 
   try {
     const properties = PropertiesService.getScriptProperties();
-    let spreadsheetId = properties.getProperty('SPREADSHEET_ID');
+    let spreadsheetId = CONFIG.SPREADSHEET_ID ||
+      properties.getProperty('SPREADSHEET_ID');
     let spreadsheet = null;
 
     if (spreadsheetId) {
       try {
         spreadsheet = SpreadsheetApp.openById(spreadsheetId);
       } catch (error) {
-        properties.deleteProperty('SPREADSHEET_ID');
+        throw new Error(
+          'Spreadsheet tidak dapat dibuka. Pastikan ID benar dan akun Apps Script memiliki akses Editor.'
+        );
       }
     }
 
     if (!spreadsheet) {
       spreadsheet = SpreadsheetApp.create(CONFIG.SPREADSHEET_NAME);
-      properties.setProperty('SPREADSHEET_ID', spreadsheet.getId());
     }
+
+    properties.setProperty('SPREADSHEET_ID', spreadsheet.getId());
 
     Object.keys(SHEETS).forEach(function(key) {
       const sheetName = SHEETS[key];
@@ -2755,7 +2760,8 @@ function deleteRow(sheetName, rowNumber) {
 
 function getSpreadsheet() {
   const properties = PropertiesService.getScriptProperties();
-  let spreadsheetId = properties.getProperty('SPREADSHEET_ID');
+  let spreadsheetId = CONFIG.SPREADSHEET_ID ||
+    properties.getProperty('SPREADSHEET_ID');
 
   if (!spreadsheetId) {
     setupDatabase();

@@ -946,6 +946,17 @@ function saveData(body, auth) {
   }
 
   if (sheetName === SHEETS.SEASONS) {
+    const existingSeason = readRows(SHEETS.SEASONS).find(function(item) {
+      return item.eventId === input.eventId && item.id !== input.id;
+    });
+
+    if (existingSeason) {
+      return {
+        success: false,
+        message: 'Event ini sudah memiliki season'
+      };
+    }
+
     const validation = validateSeasonInput(input, session);
 
     if (!validation.success) {

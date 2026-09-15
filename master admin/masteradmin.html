@@ -15,7 +15,7 @@
 </head>
 <body class="master-page">
 
-  <div id="masterLogin" class="master-login">
+  <div id="masterLogin" class="master-login hidden">
     <div class="master-login-card">
       <div class="master-login-brand">
         <div class="master-login-logo">
@@ -25,7 +25,7 @@
         <p>Master Admin</p>
       </div>
 
-```
+
   <form id="masterLoginForm" class="master-login-form">
     <div class="master-field">
       <label for="masterUsername">Username</label>
@@ -54,13 +54,11 @@
 
   <div id="masterLoginMessage" class="master-login-message"></div>
 </div>
-```
 
   </div>
 
   <div id="masterApp" class="master-app hidden">
 
-```
 <aside id="masterSidebar" class="master-sidebar">
   <div class="master-sidebar-brand">
     <div class="master-brand-icon">
@@ -120,8 +118,8 @@
 <div class="master-main">
 
   <header class="master-header">
-    <button id="masterSidebarToggle" class="master-icon-button" type="button">
-      <i class="bi bi-list"></i>
+    <button id="masterSidebarToggle" class="master-icon-button" data-sidebar-toggle type="button" aria-label="Buka menu navigasi">
+      <i class="bi bi-three-dots-vertical"></i>
     </button>
 
     <div class="master-header-title">
@@ -425,7 +423,6 @@
 
   </main>
 </div>
-```
 
   </div>
 
@@ -442,7 +439,6 @@
         </button>
       </div>
 
-```
   <form id="eventForm">
     <input id="eventId" type="hidden">
 
@@ -460,7 +456,6 @@
     </div>
   </form>
 </div>
-```
 
   </div>
 
@@ -477,7 +472,6 @@
         </button>
       </div>
 
-```
   <form id="adminForm">
     <input id="adminId" type="hidden">
 
@@ -527,7 +521,6 @@
     </div>
   </form>
 </div>
-```
 
   </div>
 
@@ -544,7 +537,6 @@
         </button>
       </div>
 
-```
   <form id="contactForm">
     <input id="contactId" type="hidden">
 
@@ -592,7 +584,6 @@
     </div>
   </form>
 </div>
-```
 
   </div>
 

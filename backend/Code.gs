@@ -420,63 +420,153 @@ function doPost(e) {
 }
 
 function setupDatabase() {
-  const properties = PropertiesService.getScriptProperties();
-  let spreadsheetId = properties.getProperty('SPREADSHEET_ID');
-  let spreadsheet;
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
 
-  if (spreadsheetId) {
-    spreadsheet = SpreadsheetApp.openById(spreadsheetId);
-  } else {
-    spreadsheet = SpreadsheetApp.create(CONFIG.SPREADSHEET_NAME);
-    properties.setProperty('SPREADSHEET_ID', spreadsheet.getId());
-  }
+  try {
+    const properties = PropertiesService.getScriptProperties();
+    let spreadsheetId = properties.getProperty('SPREADSHEET_ID');
+    let spreadsheet = null;
 
-  Object.keys(SHEETS).forEach(function(key) {
-    const sheetName = SHEETS[key];
-    let sheet = spreadsheet.getSheetByName(sheetName);
-
-    if (!sheet) {
-      sheet = spreadsheet.insertSheet(sheetName);
-    }
-
-    const headers = HEADERS[key];
-
-    if (sheet.getLastRow() === 0) {
-      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-    } else {
-      const currentHeaders = sheet
-        .getRange(1, 1, 1, Math.max(sheet.getLastColumn(), headers.length))
-        .getValues()[0];
-
-      const missing = headers.some(function(header, index) {
-        return currentHeaders[index] !== header;
-      });
-
-      if (missing) {
-        sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    if (spreadsheetId) {
+      try {
+        spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+      } catch (error) {
+        properties.deleteProperty('SPREADSHEET_ID');
       }
     }
 
-    sheet.setFrozenRows(1);
+    if (!spreadsheet) {
+      spreadsheet = SpreadsheetApp.create(CONFIG.SPREADSHEET_NAME);
+      properties.setProperty('SPREADSHEET_ID', spreadsheet.getId());
+    }
+
+    Object.keys(SHEETS).forEach(function(key) {
+      const sheetName = SHEETS[key];
+      const sheet = spreadsheet.getSheetByName(sheetName) ||
+        spreadsheet.insertSheet(sheetName);
+
+      ensureSheetHeaders(sheet, HEADERS[key]);
+      sheet.setFrozenRows(1);
+      sheet.getRange(1, 1, 1, HEADERS[key].length)
+        .setFontWeight('bold')
+        .setBackground('#013b85')
+        .setFontColor('#ffffff');
+    });
+
+    removeEmptyDefaultSheet(spreadsheet);
+
+    const rootFolder = DriveApp.getFolderById(CONFIG.ROOT_FOLDER_ID);
+
+    FOLDERS.forEach(function(folderName) {
+      getOrCreateFolder(rootFolder, folderName);
+    });
+
+    properties.setProperty('MASTER_USERNAME', CONFIG.MASTER_USERNAME);
+    properties.setProperty('MASTER_PASSWORD', CONFIG.MASTER_PASSWORD);
+    seedSettings();
+
+    return {
+      success: true,
+      message: 'Database berhasil disiapkan',
+      spreadsheetId: spreadsheet.getId(),
+      spreadsheetUrl: spreadsheet.getUrl(),
+      rootFolderId: CONFIG.ROOT_FOLDER_ID,
+      masterUsername: CONFIG.MASTER_USERNAME,
+      sheets: Object.keys(SHEETS).map(function(key) {
+        return SHEETS[key];
+      })
+    };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function ensureSheetHeaders(sheet, headers) {
+  const lastRow = sheet.getLastRow();
+  const lastColumn = sheet.getLastColumn();
+
+  if (lastRow === 0 || lastColumn === 0) {
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    return;
+  }
+
+  const currentHeaders = sheet
+    .getRange(1, 1, 1, lastColumn)
+    .getValues()[0]
+    .map(function(value) {
+      return String(value || '').trim();
+    });
+
+  if (headers.every(function(header, index) {
+    return currentHeaders[index] === header;
+  }) && currentHeaders.length === headers.length) {
+    return;
+  }
+
+  const oldRows = lastRow > 1
+    ? sheet.getRange(2, 1, lastRow - 1, lastColumn).getValues()
+    : [];
+  const oldIndex = {};
+
+  currentHeaders.forEach(function(header, index) {
+    if (header) {
+      oldIndex[header] = index;
+    }
   });
 
-  const rootFolder = DriveApp.getFolderById(CONFIG.ROOT_FOLDER_ID);
-
-  FOLDERS.forEach(function(folderName) {
-    getOrCreateFolder(rootFolder, folderName);
+  const migratedRows = oldRows.map(function(row) {
+    return headers.map(function(header) {
+      return oldIndex[header] === undefined
+        ? ''
+        : row[oldIndex[header]];
+    });
   });
 
-  properties.setProperty('MASTER_USERNAME', CONFIG.MASTER_USERNAME);
-  properties.setProperty('MASTER_PASSWORD', CONFIG.MASTER_PASSWORD);
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
 
-  return {
-    success: true,
-    message: 'Database berhasil disiapkan',
-    spreadsheetId: spreadsheet.getId(),
-    spreadsheetUrl: spreadsheet.getUrl(),
-    rootFolderId: CONFIG.ROOT_FOLDER_ID,
-    masterUsername: CONFIG.MASTER_USERNAME
+  if (migratedRows.length) {
+    sheet.getRange(2, 1, migratedRows.length, headers.length)
+      .setValues(migratedRows);
+  }
+}
+
+function removeEmptyDefaultSheet(spreadsheet) {
+  const defaultSheet = spreadsheet.getSheetByName('Sheet1');
+
+  if (
+    defaultSheet &&
+    spreadsheet.getSheets().length > 1 &&
+    defaultSheet.getLastRow() === 0 &&
+    defaultSheet.getLastColumn() === 0
+  ) {
+    spreadsheet.deleteSheet(defaultSheet);
+  }
+}
+
+function seedSettings() {
+  const settings = readRows(SHEETS.SETTINGS);
+  const defaults = {
+    timezone: CONFIG.TIMEZONE,
+    databaseVersion: '2.0.0'
   };
+
+  Object.keys(defaults).forEach(function(key) {
+    const existing = settings.find(function(item) {
+      return item.key === key;
+    });
+
+    if (!existing) {
+      appendRow(SHEETS.SETTINGS, {
+        id: Utilities.getUuid(),
+        key: key,
+        value: defaults[key],
+        createdAt: now(),
+        updatedAt: now()
+      });
+    }
+  });
 }
 
 function login(body) {

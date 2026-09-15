@@ -300,13 +300,25 @@ const FOLDERS = [
   '99_ARCHIVE'
 ];
 
-function doGet() {
+function doGet(e) {
+  if (
+    e &&
+    e.parameter &&
+    e.parameter.action === 'setup'
+  ) {
+    return jsonOutput(setupDatabase());
+  }
+
   return jsonOutput({
     success: true,
     app: 'JURNAL KASENT API',
     version: '2.0.0',
     time: now()
   });
+}
+
+function initializeDatabase() {
+  return setupDatabase();
 }
 
 function doPost(e) {

@@ -2570,6 +2570,10 @@ function prepareData(sheetName, data) {
 }
 
 function validateSeasonInput(data, session) {
+  const eventType = String(data.eventType || '')
+    .toLowerCase()
+    .replace(/_/g, '');
+
   if (!data.name || !String(data.name).trim()) {
     return {
       success: false,
@@ -2594,10 +2598,7 @@ function validateSeasonInput(data, session) {
     };
   }
 
-  if (
-    data.eventType &&
-    ['group8', 'knockout16'].indexOf(data.eventType) === -1
-  ) {
+  if (eventType && ['group8', 'knockout16'].indexOf(eventType) === -1) {
     return {
       success: false,
       message: 'Tipe event tidak valid'

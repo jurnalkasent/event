@@ -900,16 +900,6 @@ function saveData(body, auth) {
   }
 
   if (
-    sheetName === SHEETS.EVENTS &&
-    session.role !== 'master'
-  ) {
-    return {
-      success: false,
-      message: 'Hanya Master Admin yang dapat mengubah event'
-    };
-  }
-
-  if (
     sheetName === SHEETS.USERS &&
     session.role !== 'master'
   ) {
@@ -2469,7 +2459,7 @@ function canAccessData(sheetName, data, session) {
   }
 
   if (sheetName === SHEETS.EVENTS) {
-    return false;
+    return data.id === session.eventId;
   }
 
   if (sheetName === SHEETS.USERS) {
@@ -2498,6 +2488,12 @@ function scopeRows(rows, sheetName, session) {
 
   if (sheetName === SHEETS.CONTACTS) {
     return rows;
+  }
+
+  if (sheetName === SHEETS.EVENTS) {
+    return rows.filter(function(item) {
+      return item.id === session.eventId;
+    });
   }
 
   return rows.filter(function(item) {

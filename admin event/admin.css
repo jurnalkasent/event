@@ -418,6 +418,11 @@ a {
   font-size: 11px;
 }
 
+.topbar-season small {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
 .icon-button {
   width: 37px;
   height: 37px;
@@ -2908,4 +2913,90 @@ body.modal-open {
     height: 52px;
     flex-basis: 52px;
   }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.admin-login-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #013b85, #0b5cad);
+}
+
+.admin-login-card {
+  width: min(100%, 420px);
+  padding: 32px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(0, 20, 60, 0.28);
+}
+
+.admin-login-brand {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.admin-login-logo {
+  color: #013b85;
+  font-size: 42px;
+}
+
+.admin-login-brand h1,
+.admin-login-brand p {
+  margin: 4px 0 0;
+}
+
+.admin-login-brand p {
+  color: #667085;
+}
+
+.admin-login-form {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-login-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.admin-login-password {
+  position: relative;
+}
+
+.admin-login-password input {
+  padding-right: 44px;
+}
+
+.admin-login-password button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: #667085;
+  cursor: pointer;
+}
+
+.admin-login-submit {
+  min-height: 46px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #013b85;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }

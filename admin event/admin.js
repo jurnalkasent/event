@@ -54,11 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function modalOpen(id) {
-    if ($(id)) $(id).classList.add('show');
+    const modal = $(id);
+    const backdrop = $('modalBackdrop');
+
+    if (modal) modal.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
   }
 
   function modalClose(id) {
-    if ($(id)) $(id).classList.remove('show');
+    const modal = $(id);
+    const backdrop = $('modalBackdrop');
+
+    if (modal) modal.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
   }
 
   function normalizeId(value) {
@@ -240,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = App.getUser();
 
     if (!user) {
-      showLogin();
+      window.location.href = '../index.html';
       return;
     }
 
@@ -261,6 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    if (!await App.validateSession()) {
+      App.logout();
+      return;
+    }
+
     showApplication();
     await loadApplication();
   }
@@ -268,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showLogin() {
     hide('appShell');
     hide('adminApp');
-    show('loginScreen');
+    window.location.href = '../index.html';
   }
 
   function showApplication() {
@@ -464,10 +477,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = state.user || {};
     const event = currentEvent();
 
-    text('adminName', user.name || user.username || 'Admin Event');
-    text('sidebarAdminName', user.name || user.username || 'Admin Event');
+    text('topbarUserName', user.name || user.username || 'Admin Event');
+    text('sidebarUserName', user.name || user.username || 'Admin Event');
     text('sidebarEventName', event?.name || 'Event');
     text('topbarEventName', event?.name || 'Event');
+    text('topbarSeasonName', currentSeason()?.name || 'Belum ada season');
   }
 
   function updateDashboard() {
@@ -502,6 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderAll() {
     renderSeasonSelects();
     renderSeasonInfo();
+    renderSeasons();
     renderCommittee();
     renderClubs();
     renderPeople();
@@ -517,6 +532,34 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDashboardMatches();
     populateClubSelects();
     populateMatchClubSelects();
+  }
+
+  function renderSeasons() {
+    const body = $('seasonTableBody');
+    if (!body) return;
+
+    if (!state.seasons.length) {
+      body.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty-cell">Belum ada season.</td>
+        </tr>
+      `;
+      return;
+    }
+
+    body.innerHTML = state.seasons.map(season => `
+      <tr>
+        <td>${escape(season.name || '-')}</td>
+        <td>${escape(season.eventType || '-')}</td>
+        <td>${escape(season.status || 'ACTIVE')}</td>
+        <td>${escape(dateDisplay(season.createdAt))}</td>
+        <td>
+          <button class="btn-icon" data-action="edit-season" data-id="${escape(rowId(season))}" title="Edit">
+            <i class="bi bi-pencil"></i>
+          </button>
+        </td>
+      </tr>
+    `).join('');
   }
 
   function renderSeasonSelects() {
@@ -554,6 +597,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderSeasonInfo() {
     const season = currentSeason();
+    const setupAlert = $('seasonSetupAlert');
+
+    if (setupAlert) {
+      setupAlert.classList.toggle('hidden', !!season);
+    }
+
     if (!season) {
       text('currentSeasonName', 'Belum ada season');
       text('currentSeasonBio', '-');
@@ -1395,8 +1444,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function populateClubSelects() {
     const selectors = [
       'personClub',
-      'matchHomeClub',
-      'matchAwayClub'
+      'matchHome',
+      'matchAway'
     ];
 
     selectors.forEach(id => {
@@ -1425,15 +1474,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function populateMatchClubSelects() {
-    const home = $('matchHomeClub');
-    const away = $('matchAwayClub');
+    const home = $('matchHome');
+    const away = $('matchAway');
 
     if (!home || !away) return;
 
     const season = currentSeason();
     const isKnockout =
       String(
-        value('matchStage') ||
+        value('matchPhase') ||
         ''
       ).toLowerCase().includes('knockout');
 
@@ -1474,7 +1523,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
 
-    modalOpen('modalSeason');
+    modalOpen('seasonModal');
   }
 
   async function saveSeason() {
@@ -1488,6 +1537,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const id = value('seasonId');
+
+    if (!id && state.seasons.length) {
+      toast('Event ini sudah memiliki season.', 'error');
+      modalClose('seasonModal');
+      return;
+    }
 
     const data = {
       id,
@@ -1505,7 +1560,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!saved) return;
 
-      modalClose('modalSeason');
+      modalClose('seasonModal');
       await loadSeasons();
 
       if (!state.currentSeasonId) {
@@ -1536,7 +1591,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
 
-    modalOpen('modalCommittee');
+    modalOpen('committeeModal');
   }
 
   async function saveCommittee() {
@@ -1571,7 +1626,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('COMMITTEE', data)) {
-        modalClose('modalCommittee');
+        modalClose('committeeModal');
         await loadCommittee();
         renderCommittee();
       }
@@ -1584,7 +1639,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setValue('clubId', rowId(item));
     setValue('clubName', item?.name || item?.nama || '');
     setValue(
-      'clubManagerName',
+      'clubManager',
       item?.managerName ||
       item?.manager ||
       ''
@@ -1602,12 +1657,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
 
-    modalOpen('modalClub');
+    modalOpen('clubModal');
   }
 
   async function saveClub() {
     const name = value('clubName');
-    const managerName = value('clubManagerName');
+    const managerName = value('clubManager');
     const managerPhone = value('clubManagerPhone');
     const logoUrl = value('clubLogoUrl');
 
@@ -1629,7 +1684,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('CLUBS', data)) {
-        modalClose('modalClub');
+        modalClose('clubModal');
         await loadClubs();
         renderClubs();
         populateClubSelects();
@@ -1641,7 +1696,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function uploadClubLogo() {
-    const input = $('clubLogoFile');
+    const input = $('clubLogo');
     if (!input?.files?.[0]) return;
 
     loading(true);
@@ -1688,7 +1743,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
 
-    modalOpen('modalPerson');
+    modalOpen('personModal');
   }
 
   async function savePerson() {
@@ -1716,7 +1771,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('PEOPLE', data)) {
-        modalClose('modalPerson');
+        modalClose('personModal');
         await loadPeople();
         renderPeople();
         updateDashboard();
@@ -1729,7 +1784,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function openMatchModal(item = null) {
     setValue('matchId', rowId(item));
     setValue(
-      'matchStage',
+      'matchPhase',
       item?.stage ||
       item?.type ||
       ''
@@ -1749,11 +1804,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
     setValue(
-      'matchHomeClub',
+      'matchHome',
       matchClubId(item, 'home')
     );
     setValue(
-      'matchAwayClub',
+      'matchAway',
       matchClubId(item, 'away')
     );
     setValue(
@@ -1764,12 +1819,12 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     updateMatchMode();
-    modalOpen('modalMatch');
+    modalOpen('matchModal');
   }
 
   function updateMatchMode() {
     const stage = String(
-      value('matchStage')
+      value('matchPhase')
     ).toLowerCase();
 
     const knockout = stage.includes('knockout');
@@ -1781,12 +1836,12 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     }
 
-    if ($('matchHomeClub')) {
-      $('matchHomeClub').disabled = knockout;
+    if ($('matchHome')) {
+      $('matchHome').disabled = knockout;
     }
 
-    if ($('matchAwayClub')) {
-      $('matchAwayClub').disabled = knockout;
+    if ($('matchAway')) {
+      $('matchAway').disabled = knockout;
     }
   }
 
@@ -1796,12 +1851,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const stage = value('matchStage');
+    const stage = value('matchPhase');
     const date = value('matchDate');
     const time = value('matchTime');
     const groupId = value('matchGroup');
-    const homeClubId = value('matchHomeClub');
-    const awayClubId = value('matchAwayClub');
+    const homeClubId = value('matchHome');
+    const awayClubId = value('matchAway');
     const round = value('matchRound');
 
     if (!stage || !date || !time) {
@@ -1839,7 +1894,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('MATCHES', data)) {
-        modalClose('modalMatch');
+        modalClose('matchModal');
         await reloadMatches();
       }
     } finally {
@@ -1882,7 +1937,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     renderValidationTeams(match);
-    modalOpen('modalValidation');
+    modalOpen('validationModal');
   }
 
   function renderValidationTeams(match) {
@@ -2021,7 +2076,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       await saveValidationExtras(matchId);
-      modalClose('modalValidation');
+      modalClose('validationModal');
       await reloadMatches();
       await loadSeasonData();
       renderAll();
@@ -2098,7 +2153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       item.notes || ''
     );
 
-    modalOpen('modalPostpone');
+    modalOpen('postponeModal');
   }
 
   async function savePostpone() {
@@ -2131,7 +2186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      modalClose('modalPostpone');
+      modalClose('postponeModal');
       await reloadMatches();
     } finally {
       loading(false);
@@ -2345,7 +2400,7 @@ document.addEventListener('DOMContentLoaded', () => {
       activeValue(item)
     );
 
-    modalOpen('modalSponsor');
+    modalOpen('sponsorModal');
   }
 
   async function saveSponsor() {
@@ -2369,7 +2424,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('SPONSORS', data)) {
-        modalClose('modalSponsor');
+        modalClose('sponsorModal');
         await loadSponsors();
         renderSponsors();
       }
@@ -2379,7 +2434,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function uploadSponsorLogo() {
-    const input = $('sponsorLogoFile');
+    const input = $('sponsorLogo');
     if (!input?.files?.[0]) return;
 
     loading(true);
@@ -2436,7 +2491,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
 
-    modalOpen('modalBank');
+    modalOpen('bankModal');
   }
 
   async function saveBank() {
@@ -2468,7 +2523,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('BANKS', data)) {
-        modalClose('modalBank');
+        modalClose('bankModal');
         await loadBanks();
         renderBanks();
       }
@@ -2478,7 +2533,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function uploadBankQr() {
-    const input = $('bankQrFile');
+    const input = $('bankQr');
     if (!input?.files?.[0]) return;
 
     loading(true);
@@ -2533,7 +2588,7 @@ document.addEventListener('DOMContentLoaded', () => {
       activeValue(item)
     );
 
-    modalOpen('modalSeasonContact');
+    modalOpen('seasonContactModal');
   }
 
   async function saveSeasonContact() {
@@ -2565,7 +2620,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('SEASON_CONTACTS', data)) {
-        modalClose('modalSeasonContact');
+        modalClose('seasonContactModal');
 
         const rows = await loadSheet('SEASON_CONTACTS');
         state.seasonContacts = filterSeason(rows);
@@ -2603,7 +2658,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ''
     );
 
-    modalOpen('modalProfile');
+    modalOpen('profileModal');
   }
 
   async function saveProfile() {
@@ -2626,7 +2681,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (await saveSheet('EVENTS', event)) {
-        modalClose('modalProfile');
+        modalClose('profileModal');
         await loadEvent();
         updateUserInfo();
         renderSeasonInfo();
@@ -2638,7 +2693,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function uploadEventLogo() {
-    const input = $('profileLogoFile');
+    const input = $('profileLogo');
     if (!input?.files?.[0]) return;
 
     loading(true);
@@ -2761,7 +2816,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (window.innerWidth <= 991) {
-          document.body.classList.remove('sidebar-open');
+          $('sidebar')?.classList.remove('open');
+          $('sidebarOverlay')?.classList.remove('active');
         }
       });
     });
@@ -2769,6 +2825,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setupEvents() {
     document.addEventListener('click', async event => {
+      const sectionLink = event.target.closest('[data-section-link]');
+
+      if (sectionLink) {
+        event.preventDefault();
+        const targetSection = sectionLink.dataset.sectionLink;
+        const navigationButton = document.querySelector(
+          `[data-section="${targetSection}"]`
+        );
+
+        navigationButton?.click();
+        modalOpen('seasonModal');
+        return;
+      }
+
+      const modalTrigger = event.target.closest('[data-modal]');
+
+      if (modalTrigger) {
+        event.preventDefault();
+        modalOpen(modalTrigger.dataset.modal);
+        return;
+      }
+
+      const modalCloseButton = event.target.closest('[data-close-modal]');
+
+      if (modalCloseButton) {
+        event.preventDefault();
+        const modal = modalCloseButton.closest('.modal');
+        modalClose(modal?.id || modalCloseButton.dataset.modal);
+        return;
+      }
+
       const target = event.target.closest('[data-action]');
       if (!target) return;
 
@@ -3094,7 +3181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectSeason(target.value);
       }
 
-      if (target.matches('#matchStage')) {
+      if (target.matches('#matchPhase')) {
         updateMatchMode();
       }
     });
@@ -3152,13 +3239,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setupSidebar() {
-    const button = $('sidebarToggle');
+    const button = $('sidebarOpen');
+    const sidebar = $('sidebar');
+    const close = $('sidebarClose');
+    const overlay = $('sidebarOverlay');
 
-    if (!button) return;
+    const closeSidebar = () => {
+      sidebar?.classList.remove('open');
+      overlay?.classList.remove('active');
+    };
 
-    button.addEventListener('click', () => {
-      document.body.classList.toggle('sidebar-open');
+    const openSidebar = () => {
+      sidebar?.classList.add('open');
+      overlay?.classList.add('active');
+    };
+
+    button?.addEventListener('click', () => {
+      if (sidebar?.classList.contains('open')) closeSidebar();
+      else openSidebar();
     });
+
+    close?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
+
+    let touchStartX = 0;
+
+    document.addEventListener('touchstart', event => {
+      if (event.touches.length === 1) {
+        touchStartX = event.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', event => {
+      if (!touchStartX || event.changedTouches.length !== 1) return;
+
+      const distance = event.changedTouches[0].clientX - touchStartX;
+
+      if (window.innerWidth <= 800 && Math.abs(distance) >= 55) {
+        if (distance > 0 && touchStartX <= 48) openSidebar();
+        if (distance < 0) closeSidebar();
+      }
+
+      touchStartX = 0;
+    }, { passive: true });
   }
 
   function setupForms() {

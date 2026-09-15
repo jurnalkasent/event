@@ -482,6 +482,7 @@ function setupDatabase() {
     properties.setProperty('MASTER_USERNAME', CONFIG.MASTER_USERNAME);
     properties.setProperty('MASTER_PASSWORD', CONFIG.MASTER_PASSWORD);
     seedSettings();
+    seedMasterAdmin();
 
     return {
       success: true,
@@ -583,6 +584,29 @@ function seedSettings() {
         updatedAt: now()
       });
     }
+  });
+}
+
+function seedMasterAdmin() {
+  const users = readRows(SHEETS.USERS);
+  const existing = users.find(function(user) {
+    return String(user.username || '').trim() === CONFIG.MASTER_USERNAME;
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  return appendRow(SHEETS.USERS, {
+    id: 'MASTER_ADMIN',
+    eventId: '',
+    name: 'Master Admin',
+    username: CONFIG.MASTER_USERNAME,
+    password: CONFIG.MASTER_PASSWORD,
+    role: 'master',
+    active: true,
+    createdAt: now(),
+    updatedAt: now()
   });
 }
 

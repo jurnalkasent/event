@@ -22,6 +22,12 @@ const MasterAdmin = {
         this.openSection(nav.dataset.section);
       }
 
+      const sectionButton = event.target.closest('[data-section-button]');
+      if (sectionButton) {
+        event.preventDefault();
+        this.openSection(sectionButton.dataset.sectionButton);
+      }
+
       const logout = event.target.closest('[data-master-logout]');
       if (logout) {
         event.preventDefault();
@@ -132,6 +138,35 @@ const MasterAdmin = {
       });
     }
 
+    let touchStartX = 0;
+
+    document.addEventListener('touchstart', event => {
+      if (event.touches.length === 1) {
+        touchStartX = event.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', event => {
+      if (!touchStartX || event.changedTouches.length !== 1) return;
+
+      const touchEndX = event.changedTouches[0].clientX;
+      const distance = touchEndX - touchStartX;
+      const sidebar = qs('.master-sidebar');
+      const overlay = qs('.master-sidebar-overlay');
+
+      if (Math.abs(distance) >= 55 && window.innerWidth <= 900) {
+        if (distance > 0 && touchStartX <= 48) {
+          sidebar?.classList.add('open');
+          overlay?.classList.add('show');
+        } else if (distance < 0) {
+          sidebar?.classList.remove('open');
+          overlay?.classList.remove('show');
+        }
+      }
+
+      touchStartX = 0;
+    }, { passive: true });
+
     const sidebarOverlay = qs('.master-sidebar-overlay');
     if (sidebarOverlay) {
       sidebarOverlay.addEventListener('click', () => {
@@ -155,7 +190,7 @@ const MasterAdmin = {
     const token = App.getToken();
 
     if (!user || !token) {
-      this.showLogin();
+      window.location.href = '../index.html';
       return;
     }
 
@@ -168,7 +203,11 @@ const MasterAdmin = {
       role !== 'MASTERADMIN'
     ) {
       App.logout();
-      this.showLogin();
+      return;
+    }
+
+    if (!await App.validateSession()) {
+      App.logout();
       return;
     }
 
@@ -376,11 +415,13 @@ const MasterAdmin = {
 
   openSection(section) {
     this.state.currentSection = section;
+    const sectionId = `section-${section}`;
 
     document.querySelectorAll('.master-section').forEach(item => {
       item.classList.toggle(
         'active',
-        item.dataset.section === section
+        item.dataset.section === section ||
+        item.id === sectionId
       );
     });
 
@@ -451,10 +492,10 @@ const MasterAdmin = {
       return this.isActive(item);
     }).length;
 
-    this.setValue('[data-stat-events]', eventCount);
-    this.setValue('[data-stat-seasons]', seasonCount);
-    this.setValue('[data-stat-admins]', adminCount);
-    this.setValue('[data-stat-contacts]', activeContactCount);
+    this.setValue('#statEvents', eventCount);
+    this.setValue('#statSeasons', seasonCount);
+    this.setValue('#statAdmins', adminCount);
+    this.setValue('#statContacts', activeContactCount);
 
     const latestEvents = [...this.state.events]
       .sort((a, b) => {
@@ -476,7 +517,7 @@ const MasterAdmin = {
       })
       .slice(0, 5);
 
-    const container = qs('#dashboardLatestEvents');
+    const container = qs('#dashboardEvents');
 
     if (!container) return;
 
@@ -524,6 +565,25 @@ const MasterAdmin = {
         </div>
       `;
     }).join('');
+
+    const adminContainer = qs('#dashboardAdmins');
+
+    if (adminContainer) {
+      const latestAdmins = this.state.admins.slice(0, 5);
+
+      adminContainer.innerHTML = latestAdmins.length
+        ? latestAdmins.map(admin => `
+            <div class="master-mini-item">
+              <strong>${escapeHtml(admin.name || admin.username || '-')}</strong>
+              <span>${escapeHtml(admin.username || '-')}</span>
+            </div>
+          `).join('')
+        : `
+            <div class="master-empty">
+              <div class="master-empty-text">Belum ada admin event.</div>
+            </div>
+          `;
+    }
   },
 
   setValue(selector, value) {
@@ -592,7 +652,7 @@ const MasterAdmin = {
 
   populateEventDropdowns() {
     const selects = document.querySelectorAll(
-      '#adminEventId, [data-event-dropdown]'
+      '#adminEvent, [data-event-dropdown]'
     );
 
     selects.forEach(select => {
@@ -619,19 +679,19 @@ const MasterAdmin = {
   },
 
   openModal(type) {
-    if (type === 'event') {
+    if (type === 'event' || type === 'eventModal') {
       this.prepareEventForm();
       this.showModal('eventModal');
       return;
     }
 
-    if (type === 'admin') {
+    if (type === 'admin' || type === 'adminModal') {
       this.prepareAdminForm();
       this.showModal('adminModal');
       return;
     }
 
-    if (type === 'contact') {
+    if (type === 'contact' || type === 'contactModal') {
       this.prepareContactForm();
       this.showModal('contactModal');
     }
@@ -928,7 +988,7 @@ const MasterAdmin = {
     form.reset();
 
     const id = qs('#adminId');
-    const event = qs('#adminEventId');
+    const event = qs('#adminEvent');
     const name = qs('#adminName');
     const username = qs('#adminUsername');
     const password = qs('#adminPassword');
@@ -1000,7 +1060,7 @@ const MasterAdmin = {
 
   async saveAdmin() {
     const idInput = qs('#adminId');
-    const eventInput = qs('#adminEventId');
+    const eventInput = qs('#adminEvent');
     const nameInput = qs('#adminName');
     const usernameInput = qs('#adminUsername');
     const passwordInput = qs('#adminPassword');

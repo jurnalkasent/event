@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#013b85">
+  <title>Master Admin - Jurnal Kasent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/styles.css" disabled>
+  <link rel="stylesheet" href="masteradmin.css">
+</head>
+<body class="master-page">
+
+  <div id="masterLogin" class="master-login">
+    <div class="master-login-card">
+      <div class="master-login-brand">
+        <div class="master-login-logo">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <h1>Jurnal Kasent</h1>
+        <p>Master Admin</p>
+      </div>
+
+```
+  <form id="masterLoginForm" class="master-login-form">
+    <div class="master-field">
+      <label for="masterUsername">Username</label>
+      <div class="master-input-icon">
+        <i class="bi bi-person"></i>
+        <input id="masterUsername" type="text" autocomplete="username" required>
+      </div>
+    </div>
+
+    <div class="master-field">
+      <label for="masterPassword">Password</label>
+      <div class="master-input-icon">
+        <i class="bi bi-lock"></i>
+        <input id="masterPassword" type="password" autocomplete="current-password" required>
+        <button type="button" class="master-password-toggle" data-password-toggle="masterPassword">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <button type="submit" class="master-btn master-btn-primary master-login-button">
+      <i class="bi bi-box-arrow-in-right"></i>
+      Masuk Master Admin
+    </button>
+  </form>
+
+  <div id="masterLoginMessage" class="master-login-message"></div>
+</div>
+```
+
+  </div>
+
+  <div id="masterApp" class="master-app hidden">
+
+```
+<aside id="masterSidebar" class="master-sidebar">
+  <div class="master-sidebar-brand">
+    <div class="master-brand-icon">
+      <i class="bi bi-journal-richtext"></i>
+    </div>
+    <div>
+      <strong>JURNAL KASENT</strong>
+      <span>MASTER ADMIN</span>
+    </div>
+  </div>
+
+  <div class="master-sidebar-profile">
+    <div class="master-avatar">
+      <i class="bi bi-person-fill"></i>
+    </div>
+    <div>
+      <strong id="masterProfileName">Keeki</strong>
+      <span>Master Administrator</span>
+    </div>
+  </div>
+
+  <nav class="master-sidebar-nav">
+    <button class="master-nav-item active" data-section="dashboard">
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span>Dashboard</span>
+    </button>
+
+    <button class="master-nav-item" data-section="events">
+      <i class="bi bi-calendar-event-fill"></i>
+      <span>Event</span>
+    </button>
+
+    <button class="master-nav-item" data-section="admins">
+      <i class="bi bi-person-badge-fill"></i>
+      <span>Admin Event</span>
+    </button>
+
+    <button class="master-nav-item" data-section="contacts">
+      <i class="bi bi-share-fill"></i>
+      <span>Kontak Publik</span>
+    </button>
+  </nav>
+
+  <div class="master-sidebar-bottom">
+    <button class="master-nav-item" data-section="settings">
+      <i class="bi bi-gear-fill"></i>
+      <span>Pengaturan</span>
+    </button>
+
+    <button class="master-nav-item master-logout-button" data-master-logout>
+      <i class="bi bi-box-arrow-left"></i>
+      <span>Keluar</span>
+    </button>
+  </div>
+</aside>
+
+<div class="master-main">
+
+  <header class="master-header">
+    <button id="masterSidebarToggle" class="master-icon-button" type="button">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div class="master-header-title">
+      <span>Master Admin</span>
+      <strong id="masterSectionTitle">Dashboard</strong>
+    </div>
+
+    <div class="master-header-actions">
+      <div class="master-header-date">
+        <i class="bi bi-calendar3"></i>
+        <span id="masterCurrentDate">-</span>
+      </div>
+
+      <button class="master-icon-button" type="button" data-section-button="settings">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="master-content">
+
+    <section id="section-dashboard" class="master-section active">
+      <div class="master-section-heading">
+        <div>
+          <span class="master-eyebrow">Ringkasan sistem</span>
+          <h2>Dashboard</h2>
+          <p>Kelola event, admin event, dan kontak publik Jurnal Kasent.</p>
+        </div>
+        <button class="master-btn master-btn-primary" data-open-modal="eventModal">
+          <i class="bi bi-plus-lg"></i>
+          Buat Event
+        </button>
+      </div>
+
+      <div class="master-stat-grid">
+        <div class="master-stat-card">
+          <div class="master-stat-icon blue">
+            <i class="bi bi-calendar2-event-fill"></i>
+          </div>
+          <div>
+            <span>Total Event</span>
+            <strong id="statEvents">0</strong>
+          </div>
+        </div>
+
+        <div class="master-stat-card">
+          <div class="master-stat-icon red">
+            <i class="bi bi-person-badge-fill"></i>
+          </div>
+          <div>
+            <span>Admin Event</span>
+            <strong id="statAdmins">0</strong>
+          </div>
+        </div>
+
+        <div class="master-stat-card">
+          <div class="master-stat-icon green">
+            <i class="bi bi-broadcast-pin"></i>
+          </div>
+          <div>
+            <span>Kontak Aktif</span>
+            <strong id="statContacts">0</strong>
+          </div>
+        </div>
+
+        <div class="master-stat-card">
+          <div class="master-stat-icon orange">
+            <i class="bi bi-layers-fill"></i>
+          </div>
+          <div>
+            <span>Total Season</span>
+            <strong id="statSeasons">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="master-dashboard-grid">
+        <div class="master-panel">
+          <div class="master-panel-header">
+            <div>
+              <h3>Event Terbaru</h3>
+              <p>Daftar event yang telah dibuat.</p>
+            </div>
+            <button class="master-text-button" data-section-button="events">Lihat Semua</button>
+          </div>
+          <div id="dashboardEvents" class="master-mini-list"></div>
+        </div>
+
+        <div class="master-panel">
+          <div class="master-panel-header">
+            <div>
+              <h3>Admin Event</h3>
+              <p>Akun administrator event.</p>
+            </div>
+            <button class="master-text-button" data-section-button="admins">Kelola</button>
+          </div>
+          <div id="dashboardAdmins" class="master-mini-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-events" class="master-section">
+      <div class="master-section-heading">
+        <div>
+          <span class="master-eyebrow">Manajemen event</span>
+          <h2>Event</h2>
+          <p>Buat dan kelola event yang tersedia di Jurnal Kasent.</p>
+        </div>
+        <button class="master-btn master-btn-primary" data-open-modal="eventModal">
+          <i class="bi bi-plus-lg"></i>
+          Tambah Event
+        </button>
+      </div>
+
+      <div class="master-toolbar">
+        <div class="master-search">
+          <i class="bi bi-search"></i>
+          <input id="eventSearch" type="search" placeholder="Cari nama event...">
+        </div>
+
+        <button id="refreshEvents" class="master-btn master-btn-outline" type="button">
+          <i class="bi bi-arrow-clockwise"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div class="master-panel">
+        <div class="master-table-wrapper">
+          <table class="master-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Event</th>
+                <th>Season</th>
+                <th>Status</th>
+                <th>Dibuat</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="eventsEmpty" class="master-empty hidden">
+          <i class="bi bi-calendar-x"></i>
+          <strong>Belum ada event</strong>
+          <span>Buat event pertama untuk memulai.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-admins" class="master-section">
+      <div class="master-section-heading">
+        <div>
+          <span class="master-eyebrow">Akses administrator</span>
+          <h2>Admin Event</h2>
+          <p>Setiap akun admin otomatis memiliki akses berdasarkan event yang dipilih.</p>
+        </div>
+        <button class="master-btn master-btn-primary" data-open-modal="adminModal">
+          <i class="bi bi-person-plus-fill"></i>
+          Tambah Admin
+        </button>
+      </div>
+
+      <div class="master-toolbar">
+        <div class="master-search">
+          <i class="bi bi-search"></i>
+          <input id="adminSearch" type="search" placeholder="Cari admin, username, atau event...">
+        </div>
+
+        <select id="adminEventFilter" class="master-select">
+          <option value="">Semua Event</option>
+        </select>
+
+        <button id="refreshAdmins" class="master-btn master-btn-outline" type="button">
+          <i class="bi bi-arrow-clockwise"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div class="master-panel">
+        <div class="master-table-wrapper">
+          <table class="master-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Event</th>
+                <th>Nama Admin</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="adminsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="adminsEmpty" class="master-empty hidden">
+          <i class="bi bi-person-x"></i>
+          <strong>Belum ada admin event</strong>
+          <span>Tambahkan administrator untuk sebuah event.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-contacts" class="master-section">
+      <div class="master-section-heading">
+        <div>
+          <span class="master-eyebrow">Informasi publik</span>
+          <h2>Kontak Publik</h2>
+          <p>Kontak yang aktif akan ditampilkan pada halaman Guest/Public.</p>
+        </div>
+        <button class="master-btn master-btn-primary" data-open-modal="contactModal">
+          <i class="bi bi-plus-lg"></i>
+          Tambah Kontak
+        </button>
+      </div>
+
+      <div class="master-toolbar">
+        <div class="master-search">
+          <i class="bi bi-search"></i>
+          <input id="contactSearch" type="search" placeholder="Cari kontak...">
+        </div>
+
+        <select id="contactStatusFilter" class="master-select">
+          <option value="">Semua Status</option>
+          <option value="active">Aktif</option>
+          <option value="inactive">Nonaktif</option>
+        </select>
+
+        <button id="refreshContacts" class="master-btn master-btn-outline" type="button">
+          <i class="bi bi-arrow-clockwise"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div class="master-panel">
+        <div class="master-table-wrapper">
+          <table class="master-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Tipe</th>
+                <th>Nama</th>
+                <th>Link</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="contactsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="contactsEmpty" class="master-empty hidden">
+          <i class="bi bi-share"></i>
+          <strong>Belum ada kontak</strong>
+          <span>Tambahkan kontak untuk ditampilkan di halaman publik.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-settings" class="master-section">
+      <div class="master-section-heading">
+        <div>
+          <span class="master-eyebrow">Sistem</span>
+          <h2>Pengaturan</h2>
+          <p>Informasi konfigurasi dasar Master Admin.</p>
+        </div>
+      </div>
+
+      <div class="master-settings-grid">
+        <div class="master-panel master-settings-card">
+          <div class="master-settings-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div>
+            <h3>Akses Master Admin</h3>
+            <p>Akun Master Admin memiliki hak untuk mengelola event, akun Admin Event, dan kontak publik.</p>
+          </div>
+        </div>
+
+        <div class="master-panel master-settings-card">
+          <div class="master-settings-icon">
+            <i class="bi bi-database-check"></i>
+          </div>
+          <div>
+            <h3>Database</h3>
+            <p>Data tersimpan pada Google Spreadsheet dan file pendukung menggunakan Google Drive.</p>
+          </div>
+        </div>
+
+        <div class="master-panel master-settings-card">
+          <div class="master-settings-icon">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <div>
+            <h3>Zona Waktu</h3>
+            <p>Operasional sistem menggunakan zona waktu WITA.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+```
+
+  </div>
+
+  <div id="eventModal" class="master-modal">
+    <div class="master-modal-backdrop" data-close-modal="eventModal"></div>
+    <div class="master-modal-dialog">
+      <div class="master-modal-header">
+        <div>
+          <span class="master-eyebrow">Event</span>
+          <h3 id="eventModalTitle">Tambah Event</h3>
+        </div>
+        <button class="master-modal-close" type="button" data-close-modal="eventModal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+```
+  <form id="eventForm">
+    <input id="eventId" type="hidden">
+
+    <div class="master-field">
+      <label for="eventName">Nama Event</label>
+      <input id="eventName" type="text" placeholder="Contoh: SENTELUK CUP" required>
+    </div>
+
+    <div class="master-modal-actions">
+      <button type="button" class="master-btn master-btn-outline" data-close-modal="eventModal">Batal</button>
+      <button type="submit" class="master-btn master-btn-primary">
+        <i class="bi bi-check-lg"></i>
+        Simpan Event
+      </button>
+    </div>
+  </form>
+</div>
+```
+
+  </div>
+
+  <div id="adminModal" class="master-modal">
+    <div class="master-modal-backdrop" data-close-modal="adminModal"></div>
+    <div class="master-modal-dialog">
+      <div class="master-modal-header">
+        <div>
+          <span class="master-eyebrow">Administrator</span>
+          <h3 id="adminModalTitle">Tambah Admin Event</h3>
+        </div>
+        <button class="master-modal-close" type="button" data-close-modal="adminModal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+```
+  <form id="adminForm">
+    <input id="adminId" type="hidden">
+
+    <div class="master-field">
+      <label for="adminEvent">Event</label>
+      <select id="adminEvent" required>
+        <option value="">Pilih Event</option>
+      </select>
+    </div>
+
+    <div class="master-field">
+      <label for="adminName">Nama Admin</label>
+      <input id="adminName" type="text" placeholder="Nama administrator" required>
+    </div>
+
+    <div class="master-field">
+      <label for="adminUsername">Username</label>
+      <input id="adminUsername" type="text" placeholder="Username login" required>
+    </div>
+
+    <div class="master-field">
+      <label for="adminPassword">Password</label>
+      <div class="master-input-icon">
+        <i class="bi bi-lock"></i>
+        <input id="adminPassword" type="text" placeholder="Password" required>
+        <button type="button" class="master-password-toggle" data-password-toggle="adminPassword">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <label class="master-switch-row">
+      <span>
+        <strong>Admin Aktif</strong>
+        <small>Admin dapat login ke panel event.</small>
+      </span>
+      <input id="adminActive" type="checkbox" checked>
+      <span class="master-switch"></span>
+    </label>
+
+    <div class="master-modal-actions">
+      <button type="button" class="master-btn master-btn-outline" data-close-modal="adminModal">Batal</button>
+      <button type="submit" class="master-btn master-btn-primary">
+        <i class="bi bi-check-lg"></i>
+        Simpan Admin
+      </button>
+    </div>
+  </form>
+</div>
+```
+
+  </div>
+
+  <div id="contactModal" class="master-modal">
+    <div class="master-modal-backdrop" data-close-modal="contactModal"></div>
+    <div class="master-modal-dialog">
+      <div class="master-modal-header">
+        <div>
+          <span class="master-eyebrow">Publik</span>
+          <h3 id="contactModalTitle">Tambah Kontak</h3>
+        </div>
+        <button class="master-modal-close" type="button" data-close-modal="contactModal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+```
+  <form id="contactForm">
+    <input id="contactId" type="hidden">
+
+    <div class="master-field">
+      <label for="contactType">Tipe Kontak</label>
+      <select id="contactType" required>
+        <option value="">Pilih tipe</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="Facebook">Facebook</option>
+        <option value="Instagram">Instagram</option>
+        <option value="YouTube">YouTube</option>
+        <option value="TikTok">TikTok</option>
+        <option value="Website">Website</option>
+        <option value="Email">Email</option>
+        <option value="Telegram">Telegram</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+    </div>
+
+    <div class="master-field">
+      <label for="contactName">Nama</label>
+      <input id="contactName" type="text" placeholder="Nama kontak" required>
+    </div>
+
+    <div class="master-field">
+      <label for="contactLink">Link</label>
+      <input id="contactLink" type="text" placeholder="https://..." required>
+    </div>
+
+    <label class="master-switch-row">
+      <span>
+        <strong>Tampilkan di Guest</strong>
+        <small>Kontak aktif akan tampil di halaman publik.</small>
+      </span>
+      <input id="contactActive" type="checkbox" checked>
+      <span class="master-switch"></span>
+    </label>
+
+    <div class="master-modal-actions">
+      <button type="button" class="master-btn master-btn-outline" data-close-modal="contactModal">Batal</button>
+      <button type="submit" class="master-btn master-btn-primary">
+        <i class="bi bi-check-lg"></i>
+        Simpan Kontak
+      </button>
+    </div>
+  </form>
+</div>
+```
+
+  </div>
+
+  <div id="masterConfirmModal" class="master-modal">
+    <div class="master-modal-backdrop" data-close-modal="masterConfirmModal"></div>
+    <div class="master-modal-dialog master-confirm-dialog">
+      <div class="master-confirm-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <h3 id="confirmTitle">Konfirmasi</h3>
+      <p id="confirmMessage">Apakah Anda yakin?</p>
+      <div class="master-modal-actions">
+        <button type="button" class="master-btn master-btn-outline" data-close-modal="masterConfirmModal">Batal</button>
+        <button id="confirmAction" type="button" class="master-btn master-btn-danger">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="masterToastContainer" class="master-toast-container"></div>
+
+  <div id="masterLoading" class="master-loading hidden">
+    <div class="master-loading-card">
+      <div class="master-spinner"></div>
+      <span>Memproses...</span>
+    </div>
+  </div>
+
+  <script src="../backend/script.js"></script>
+
+  <script src="masteradmin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#013b85">
+  <meta name="description" content="Panel Admin Event Jurnal Kasent">
+  <title>Admin Event | Jurnal Kasent</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <div id="appShell" class="app-shell">
+
+    <aside id="sidebar" class="sidebar">
+
+      <div class="sidebar-header">
+        <div class="brand-mark">
+          <span>JK</span>
+        </div>
+        <div class="brand-text">
+          <strong>Jurnal Kasent</strong>
+          <small>Admin Event</small>
+        </div>
+        <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Tutup menu">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="event-context">
+        <span class="context-label">EVENT AKTIF</span>
+        <strong id="sidebarEventName">Memuat event...</strong>
+        <span id="sidebarSeasonName">Belum ada season</span>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+
+        <div class="nav-group">
+          <span class="nav-group-title">Utama</span>
+
+          <button type="button" class="nav-item active" data-section="dashboard">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="profile">
+            <i class="bi bi-building"></i>
+            <span>Profil Event</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="season">
+            <i class="bi bi-calendar3"></i>
+            <span>Season</span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-title">Data Event</span>
+
+          <button type="button" class="nav-item" data-section="committee">
+            <i class="bi bi-diagram-3"></i>
+            <span>Panitia</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="clubs">
+            <i class="bi bi-shield-fill"></i>
+            <span>Partisipan</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="people">
+            <i class="bi bi-people-fill"></i>
+            <span>Manajemen Personel</span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-title">Pertandingan</span>
+
+          <button type="button" class="nav-item" data-section="matches">
+            <i class="bi bi-trophy-fill"></i>
+            <span>Pertandingan</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="groups">
+            <i class="bi bi-collection-fill"></i>
+            <span>Group</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="validation">
+            <i class="bi bi-check2-square"></i>
+            <span>Validasi</span>
+            <span class="nav-counter" id="pendingValidationCount">0</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="standings">
+            <i class="bi bi-bar-chart-fill"></i>
+            <span>Klasemen</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="knockout">
+            <i class="bi bi-bezier2"></i>
+            <span>Knockout</span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-title">Informasi</span>
+
+          <button type="button" class="nav-item" data-section="top-scorers">
+            <i class="bi bi-star-fill"></i>
+            <span>Top Skor</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="history">
+            <i class="bi bi-clock-history"></i>
+            <span>Histori</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="sponsors">
+            <i class="bi bi-megaphone-fill"></i>
+            <span>Sponsor</span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-group-title">Administrasi</span>
+
+          <button type="button" class="nav-item" data-section="contacts-bank">
+            <i class="bi bi-bank2"></i>
+            <span>Rekening & Kontak</span>
+          </button>
+
+          <button type="button" class="nav-item" data-section="finish">
+            <i class="bi bi-flag-fill"></i>
+            <span>Selesai</span>
+          </button>
+        </div>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="logged-user">
+          <div class="user-avatar" id="sidebarUserAvatar">A</div>
+          <div class="user-info">
+            <strong id="sidebarUserName">Admin Event</strong>
+            <small>Admin Event</small>
+          </div>
+        </div>
+
+        <button type="button" class="logout-button" data-logout>
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Keluar</span>
+        </button>
+      </div>
+
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="main-content">
+
+      <header class="topbar">
+
+        <div class="topbar-left">
+          <button type="button" class="mobile-menu-button" id="sidebarOpen" aria-label="Buka menu">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <div class="page-heading">
+            <span id="breadcrumbLabel">Admin Event</span>
+            <h1 id="pageTitle">Dashboard</h1>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+
+          <div class="topbar-season">
+            <span>Season aktif</span>
+            <strong id="topbarSeasonName">Belum ada season</strong>
+          </div>
+
+          <button type="button" class="icon-button" id="refreshPageButton" title="Muat ulang">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+
+          <div class="topbar-user">
+            <div class="user-avatar" id="topbarUserAvatar">A</div>
+            <div>
+              <strong id="topbarUserName">Admin</strong>
+              <small>Admin Event</small>
+            </div>
+          </div>
+
+        </div>
+
+      </header>
+
+      <div class="content-wrapper">
+
+        <section class="page-section active" id="section-dashboard" data-page="dashboard">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">RINGKASAN</span>
+              <h2>Dashboard Event</h2>
+              <p>Kelola seluruh informasi dan pertandingan event dari satu panel.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-alert" id="seasonSetupAlert">
+            <div class="alert-icon">
+              <i class="bi bi-info-circle-fill"></i>
+            </div>
+            <div>
+              <strong>Season belum dibuat</strong>
+              <p>Buat season terlebih dahulu sebelum mengelola group, pertandingan, klasemen, dan modul season lainnya.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-section-link="season">
+              Buat Season
+            </button>
+          </div>
+
+          <div class="stats-grid">
+
+            <article class="stat-card">
+              <div class="stat-icon">
+                <i class="bi bi-calendar-event-fill"></i>
+              </div>
+              <div class="stat-content">
+                <span>Season</span>
+                <strong id="dashboardSeasonCount">0</strong>
+                <small>Total season event</small>
+              </div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-icon">
+                <i class="bi bi-shield-fill"></i>
+              </div>
+              <div class="stat-content">
+                <span>Partisipan</span>
+                <strong id="dashboardClubCount">0</strong>
+                <small>Klub terdaftar</small>
+              </div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-icon">
+                <i class="bi bi-trophy-fill"></i>
+              </div>
+              <div class="stat-content">
+                <span>Pertandingan</span>
+                <strong id="dashboardMatchCount">0</strong>
+                <small>Total pertandingan</small>
+              </div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-icon">
+                <i class="bi bi-check2-circle"></i>
+              </div>
+              <div class="stat-content">
+                <span>Validasi</span>
+                <strong id="dashboardValidatedCount">0</strong>
+                <small>Pertandingan selesai</small>
+              </div>
+            </article>
+
+          </div>
+
+          <div class="dashboard-grid">
+
+            <article class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Pertandingan Terdekat</h3>
+                  <p>Jadwal pertandingan yang akan datang.</p>
+                </div>
+                <button type="button" class="text-button" data-section-link="matches">
+                  Lihat semua
+                </button>
+              </div>
+              <div class="dashboard-list" id="dashboardUpcomingMatches">
+                <div class="empty-state compact">
+                  <i class="bi bi-calendar-x"></i>
+                  <strong>Belum ada pertandingan</strong>
+                  <span>Jadwal pertandingan akan tampil di sini.</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Menunggu Validasi</h3>
+                  <p>Pertandingan yang perlu diproses.</p>
+                </div>
+                <button type="button" class="text-button" data-section-link="validation">
+                  Buka validasi
+                </button>
+              </div>
+              <div class="dashboard-list" id="dashboardPendingMatches">
+                <div class="empty-state compact">
+                  <i class="bi bi-check2-square"></i>
+                  <strong>Tidak ada data</strong>
+                  <span>Pertandingan yang belum divalidasi akan tampil di sini.</span>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+          <article class="panel-card dashboard-recent">
+            <div class="panel-header">
+              <div>
+                <h3>Hasil Pertandingan Terbaru</h3>
+                <p>Ringkasan hasil pertandingan yang sudah divalidasi.</p>
+              </div>
+              <button type="button" class="text-button" data-section-link="history">
+                Buka histori
+              </button>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Pertandingan</th>
+                    <th>Babak</th>
+                    <th>Skor</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardRecentResults">
+                  <tr>
+                    <td colspan="5">
+                      <div class="empty-state compact">
+                        <i class="bi bi-inbox"></i>
+                        <strong>Belum ada hasil</strong>
+                        <span>Hasil pertandingan akan tampil di sini.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-profile" data-page="profile">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">EVENT</span>
+              <h2>Profil Event</h2>
+              <p>Kelola identitas event dan logo yang digunakan.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-modal="profileModal">
+              <i class="bi bi-pencil-square"></i>
+              Edit Profil
+            </button>
+          </div>
+
+          <div class="profile-grid">
+
+            <article class="panel-card event-profile-card">
+              <div class="profile-logo-wrapper">
+                <img id="eventLogoPreview" src="" alt="Logo event">
+                <div class="profile-logo-placeholder" id="eventLogoPlaceholder">
+                  <i class="bi bi-image"></i>
+                </div>
+              </div>
+
+              <div class="profile-main-info">
+                <span class="eyebrow">NAMA EVENT</span>
+                <h3 id="profileEventName">Memuat...</h3>
+                <p id="profileEventStatus">Aktif</p>
+              </div>
+            </article>
+
+            <article class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Informasi Event</h3>
+                  <p>Informasi dasar event yang sedang dikelola.</p>
+                </div>
+              </div>
+
+              <div class="detail-list">
+                <div class="detail-row">
+                  <span>Nama Event</span>
+                  <strong id="detailEventName">-</strong>
+                </div>
+                <div class="detail-row">
+                  <span>Season Aktif</span>
+                  <strong id="detailActiveSeason">-</strong>
+                </div>
+                <div class="detail-row">
+                  <span>Status</span>
+                  <strong id="detailEventStatus">-</strong>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+        </section>
+
+        <section class="page-section" id="section-season" data-page="season">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">KOMPETISI</span>
+              <h2>Season</h2>
+              <p>Season harus dibuat sebelum modul kompetisi dapat digunakan.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-modal="seasonModal">
+              <i class="bi bi-plus-lg"></i>
+              Tambah Season
+            </button>
+          </div>
+
+          <div class="season-state-card" id="seasonStateCard">
+            <div class="season-state-icon">
+              <i class="bi bi-calendar3"></i>
+            </div>
+            <div>
+              <span class="eyebrow">SEASON AKTIF</span>
+              <h3 id="activeSeasonTitle">Belum ada season</h3>
+              <p id="activeSeasonDescription">Silakan buat season untuk memulai pengelolaan kompetisi.</p>
+            </div>
+            <div class="season-state-action">
+              <button type="button" class="btn btn-outline" data-modal="seasonModal">
+                <i class="bi bi-plus-lg"></i>
+                Buat Season
+              </button>
+            </div>
+          </div>
+
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Daftar Season</h3>
+                <p>Season sebelumnya tetap tersimpan dan dapat dilihat kembali.</p>
+              </div>
+              <div class="table-tools">
+                <div class="search-box">
+                  <i class="bi bi-search"></i>
+                  <input type="search" id="seasonSearch" placeholder="Cari season...">
+                </div>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Season</th>
+                    <th>Jenis Event</th>
+                    <th>Status</th>
+                    <th>Dibuat</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="seasonTableBody">
+                  <tr>
+                    <td colspan="5">
+                      <div class="empty-state">
+                        <i class="bi bi-calendar-x"></i>
+                        <strong>Belum ada season</strong>
+                        <span>Buat season pertama untuk event ini.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-committee" data-page="committee">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">ORGANISASI</span>
+              <h2>Panitia</h2>
+              <p>Kelola susunan panitia event dan struktur organisasi.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-modal="committeeModal">
+              <i class="bi bi-plus-lg"></i>
+              Tambah Panitia
+            </button>
+          </div>
+
+          <div class="committee-summary panel-card">
+            <div class="committee-leader">
+              <div class="leader-icon">
+                <i class="bi bi-person-badge-fill"></i>
+              </div>
+              <div>
+                <span>Ketua Panitia</span>
+                <strong id="committeeLeaderName">Belum ditentukan</strong>
+                <small id="committeeLeaderPhone">-</small>
+              </div>
+            </div>
+            <div class="summary-number">
+              <strong id="committeeCount">0</strong>
+              <span>Total panitia</span>
+            </div>
+          </div>
+
+          <article class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Struktur Panitia</h3>
+                <p>Input pertama wajib menggunakan posisi Ketua Panitia.</p>
+              </div>
+              <div class="table-tools">
+                <div class="search-box">
+                  <i class="bi bi-search"></i>
+                  <input type="search" id="committeeSearch" placeholder="Cari panitia...">
+                </div>
+              </div>
+            </div>
+
+            <div class="org-chart" id="committeeOrgChart">
+              <div class="empty-state">
+                <i class="bi bi-diagram-3"></i>
+                <strong>Struktur belum tersedia</strong>
+                <span>Tambahkan data panitia untuk membangun struktur organisasi.</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Posisi</th>
+                    <th>No. Telepon</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="committeeTableBody">
+                  <tr>
+                    <td colspan="4">
+                      <div class="empty-state compact">
+                        <i class="bi bi-people"></i>
+                        <strong>Belum ada panitia</strong>
+                        <span>Data panitia akan tampil di sini.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-clubs" data-page="clubs">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">PARTISIPAN</span>
+              <h2>Partisipan / Klub</h2>
+              <p>Kelola klub peserta, logo, dan kontak manager.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-modal="clubModal">
+              <i class="bi bi-plus-lg"></i>
+              Tambah Klub
+            </button>
+          </div>
+
+          <div class="toolbar-card panel-card">
+            <div class="search-box large">
+              <i class="bi bi-search"></i>
+              <input type="search" id="clubSearch" placeholder="Cari nama klub atau manager...">
+            </div>
+
+            <button type="button" class="btn btn-outline" id="clubSortButton">
+              <i class="bi bi-sort-alpha-down"></i>
+              A-Z
+            </button>
+          </div>
+
+          <div class="club-grid" id="clubGrid">
+            <div class="empty-state">
+              <i class="bi bi-shield"></i>
+              <strong>Belum ada klub</strong>
+              <span>Tambahkan klub peserta untuk season aktif.</span>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="page-section" id="section-people" data-page="people">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">MANAJEMEN</span>
+              <h2>Pemain, Manager & Official</h2>
+              <p>Kelola seluruh personel yang terhubung dengan klub.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-modal="personModal">
+              <i class="bi bi-plus-lg"></i>
+              Tambah Personel
+            </button>
+          </div>
+
+          <article class="panel-card">
+
+            <div class="panel-header">
+              <div>
+                <h3>Daftar Personel</h3>
+                <p>Nama, klub, dan posisi/title personel.</p>
+              </div>
+
+              <div class="table-tools">
+                <div class="search-box">
+                  <i class="bi bi-search"></i>
+                  <input type="search" id="peopleSearch" placeholder="Cari nama atau klub...">
+                </div>
+
+                <button type="button" class="btn btn-outline" id="peopleSortButton">
+                  <i class="bi bi-sort-alpha-down"></i>
+                  A-Z
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-pills">
+              <button type="button" class="filter-pill active" data-people-filter="all">Semua</button>
+              <button type="button" class="filter-pill" data-people-filter="player">Pemain</button>
+              <button type="button" class="filter-pill" data-people-filter="manager">Manager</button>
+              <button type="button" class="filter-pill" data-people-filter="official">Official</button>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Klub</th>
+                    <th>Posisi / Title</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="peopleTableBody">
+                  <tr>
+                    <td colspan="5">
+                      <div class="empty-state">
+                        <i class="bi bi-people"></i>
+                        <strong>Belum ada personel</strong>
+                        <span>Tambahkan pemain, manager, atau official.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-matches" data-page="matches">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">PERTANDINGAN</span>
+              <h2>Pertandingan</h2>
+              <p>Atur jadwal group dan knockout tanpa penjadwalan otomatis.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-modal="matchModal">
+              <i class="bi bi-plus-lg"></i>
+              Tambah Pertandingan
+            </button>
+          </div>
+
+          <article class="panel-card">
+
+            <div class="panel-header">
+              <div>
+                <h3>Jadwal Pertandingan</h3>
+                <p>Urutan pertandingan berdasarkan tanggal dan waktu terdekat.</p>
+              </div>
+
+              <div class="table-tools">
+                <div class="search-box">
+                  <i class="bi bi-search"></i>
+                  <input type="search" id="matchSearch" placeholder="Cari pertandingan...">
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-pills">
+              <button type="button" class="filter-pill active" data-match-filter="all">Semua</button>
+              <button type="button" class="filter-pill" data-match-filter="scheduled">Belum</button>
+              <button type="button" class="filter-pill" data-match-filter="validated">Sudah</button>
+              <button type="button" class="filter-pill" data-match-filter="postponed">Ditunda</button>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table match-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Waktu</th>
+                    <th>Fase</th>
+                    <th>Home</th>
+                    <th>Skor</th>
+                    <th>Away</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="matchTableBody">
+                  <tr>
+                    <td colspan="8">
+                      <div class="empty-state">
+                        <i class="bi bi-calendar-event"></i>
+                        <strong>Belum ada pertandingan</strong>
+                        <span>Tambahkan jadwal pertandingan terlebih dahulu.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-groups" data-page="groups">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">FASE GROUP</span>
+              <h2>Group</h2>
+              <p>Buat group secara manual atau gunakan mini-game random.</p>
+            </div>
+          </div>
+
+          <div class="group-control-grid">
+
+            <article class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Pengaturan Group</h3>
+                  <p>Group A sampai H dapat disiapkan sesuai kebutuhan season.</p>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="groupCountInput">Jumlah Group</label>
+                  <select id="groupCountInput">
+                    <option value="2">2 Group</option>
+                    <option value="3">3 Group</option>
+                    <option value="4">4 Group</option>
+                    <option value="5">5 Group</option>
+                    <option value="6">6 Group</option>
+                    <option value="7">7 Group</option>
+                    <option value="8">8 Group</option>
+                  </select>
+                </div>
+
+                <div class="form-group form-action">
+                  <button type="button" class="btn btn-primary" id="createGroupsButton">
+                    <i class="bi bi-plus-circle"></i>
+                    Buat Group
+                  </button>
+                </div>
+              </div>
+
+              <div class="group-warning">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span>Setelah fase group selesai, klasemen akan dibekukan dan bracket knockout dapat dibuat.</span>
+              </div>
+            </article>
+
+            <article class="panel-card randomizer-card">
+
+              <div class="panel-header">
+                <div>
+                  <h3>Random Group</h3>
+                  <p>Mini-game pemilihan klub secara acak.</p>
+                </div>
+                <span class="status-badge status-info">Interaktif</span>
+              </div>
+
+              <div class="randomizer-display">
+                <span>KLUB TERPILIH</span>
+                <strong id="randomClubName">Siap</strong>
+              </div>
+
+              <div class="randomizer-controls">
+                <button type="button" class="btn btn-primary btn-large" id="spinGroupButton">
+                  <i class="bi bi-shuffle"></i>
+                  Putar
+                </button>
+              </div>
+
+              <div class="randomizer-result" id="randomizerResult">
+                <span>Group</span>
+                <strong id="randomGroupName">-</strong>
+              </div>
+
+            </article>
+
+          </div>
+
+          <div class="group-grid" id="groupGrid">
+
+            <article class="group-card">
+              <div class="group-card-header">
+                <div>
+                  <span>GROUP</span>
+                  <strong>A</strong>
+                </div>
+                <span class="group-count">0 klub</span>
+              </div>
+
+              <div class="group-members" data-group="A">
+                <div class="empty-state compact">
+                  <i class="bi bi-shield"></i>
+                  <strong>Belum ada klub</strong>
+                  <span>Tambahkan klub ke group ini.</span>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+          <div class="group-actions">
+            <button type="button" class="btn btn-danger" id="finishGroupPhaseButton">
+              <i class="bi bi-lock-fill"></i>
+              Selesaikan Fase Group
+            </button>
+          </div>
+
+        </section>
+
+        <section class="page-section" id="section-validation" data-page="validation">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">HASIL</span>
+              <h2>Validasi Pertandingan</h2>
+              <p>Validasi, koreksi, atau tunda pertandingan.</p>
+            </div>
+          </div>
+
+          <article class="panel-card">
+
+            <div class="panel-header">
+              <div>
+                <h3>Daftar Pertandingan</h3>
+                <p>Pertandingan terdekat ditampilkan terlebih dahulu.</p>
+              </div>
+
+              <div class="table-tools">
+                <div class="search-box">
+                  <i class="bi bi-search"></i>
+                  <input type="search" id="validationSearch" placeholder="Cari pertandingan...">
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-pills">
+              <button type="button" class="filter-pill active" data-validation-filter="pending">Belum</button>
+              <button type="button" class="filter-pill" data-validation-filter="validated">Sudah</button>
+              <button type="button" class="filter-pill" data-validation-filter="postponed">Ditunda</button>
+            </div>
+
+            <div class="validation-list" id="validationList">
+              <div class="empty-state">
+                <i class="bi bi-check2-square"></i>
+                <strong>Tidak ada pertandingan</strong>
+                <span>Pertandingan yang perlu divalidasi akan tampil di sini.</span>
+              </div>
+            </div>
+
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-standings" data-page="standings">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">KLASEMEN</span>
+              <h2>Klasemen Group</h2>
+              <p>Perhitungan 3 poin menang, 1 seri, 0 kalah dengan GD sebagai tiebreak.</p>
+            </div>
+          </div>
+
+          <div class="standings-tabs" id="standingsTabs">
+            <button type="button" class="standings-tab active" data-group-tab="A">Group A</button>
+            <button type="button" class="standings-tab" data-group-tab="B">Group B</button>
+          </div>
+
+          <article class="panel-card standings-card">
+
+            <div class="standings-header">
+              <div>
+                <span>KLASEMEN</span>
+                <h3 id="standingsTitle">Group A</h3>
+              </div>
+
+              <span class="status-badge status-info" id="standingsStatus">
+                Berjalan
+              </span>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table standings-table">
+                <thead>
+                  <tr>
+                    <th>Pos</th>
+                    <th>Klub</th>
+                    <th>Main</th>
+                    <th>Menang</th>
+                    <th>Seri</th>
+                    <th>Kalah</th>
+                    <th>GF</th>
+                    <th>GA</th>
+                    <th>GD</th>
+                    <th>Poin</th>
+                  </tr>
+                </thead>
+                <tbody id="standingsTableBody">
+                  <tr>
+                    <td colspan="10">
+                      <div class="empty-state">
+                        <i class="bi bi-bar-chart"></i>
+                        <strong>Klasemen belum tersedia</strong>
+                        <span>Data klasemen akan muncul setelah group dan hasil pertandingan tersedia.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-knockout" data-page="knockout">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">FASE GUGUR</span>
+              <h2>Knockout</h2>
+              <p>Bracket dibuat setelah fase group selesai dan klasemen dibekukan.</p>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="generateBracketButton">
+              <i class="bi bi-diagram-3"></i>
+              Buat Bracket
+            </button>
+          </div>
+
+          <div class="knockout-notice" id="knockoutNotice">
+            <i class="bi bi-info-circle-fill"></i>
+            <div>
+              <strong>Bracket belum dibuat</strong>
+              <p>Selesaikan fase group terlebih dahulu untuk menghasilkan bracket 16 besar.</p>
+            </div>
+          </div>
+
+          <div class="bracket-wrapper">
+
+            <div class="bracket-side bracket-left">
+
+              <div class="bracket-round">
+                <div class="round-title">
+                  <span>16 BESAR</span>
+                  <strong>M1</strong>
+                </div>
+
+                <div class="match-bracket-card">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Juara Group A</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Runner-up Group B</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bracket-round">
+                <div class="round-title">
+                  <span>PEREMPAT FINAL</span>
+                  <strong>QF1</strong>
+                </div>
+
+                <div class="match-bracket-card">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang M1</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang M3</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bracket-round">
+                <div class="round-title">
+                  <span>SEMIFINAL</span>
+                  <strong>SF1</strong>
+                </div>
+
+                <div class="match-bracket-card">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang QF1</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang QF2</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="bracket-center">
+
+              <div class="final-bracket">
+                <div class="round-title">
+                  <span>FINAL</span>
+                  <strong>FINAL</strong>
+                </div>
+
+                <div class="match-bracket-card final-match">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang SF1</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang SF2</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="bracket-side bracket-right">
+
+              <div class="bracket-round">
+                <div class="round-title">
+                  <span>16 BESAR</span>
+                  <strong>M2</strong>
+                </div>
+
+                <div class="match-bracket-card">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Juara Group B</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Runner-up Group A</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bracket-round">
+                <div class="round-title">
+                  <span>PEREMPAT FINAL</span>
+                  <strong>QF3</strong>
+                </div>
+
+                <div class="match-bracket-card">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang M2</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang M4</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bracket-round">
+                <div class="round-title">
+                  <span>SEMIFINAL</span>
+                  <strong>SF2</strong>
+                </div>
+
+                <div class="match-bracket-card">
+                  <div class="bracket-date">dd/m/yy</div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang QF3</span>
+                    <strong>-</strong>
+                  </div>
+                  <div class="bracket-team">
+                    <span class="bracket-team-name">Pemenang QF4</span>
+                    <strong>-</strong>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="page-section" id="section-top-scorers" data-page="top-scorers">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">STATISTIK</span>
+              <h2>Top Skor</h2>
+              <p>Daftar pencetak gol berdasarkan hasil pertandingan tervalidasi.</p>
+            </div>
+          </div>
+
+          <article class="panel-card">
+
+            <div class="panel-header">
+              <div>
+                <h3>Top Skor Season</h3>
+                <p>Total gol diperbarui otomatis dari validasi pertandingan.</p>
+              </div>
+
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="search" id="scorerSearch" placeholder="Cari pemain atau klub...">
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table scorer-table">
+                <thead>
+                  <tr>
+                    <th>Pos</th>
+                    <th>Pemain</th>
+                    <th>Klub</th>
+                    <th>Total Gol</th>
+                  </tr>
+                </thead>
+                <tbody id="scorerTableBody">
+                  <tr>
+                    <td colspan="4">
+                      <div class="empty-state">
+                        <i class="bi bi-star"></i>
+                        <strong>Belum ada pencetak gol</strong>
+                        <span>Data akan muncul setelah pertandingan divalidasi.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-history" data-page="history">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">ARSIP</span>
+              <h2>Histori</h2>
+              <p>Riwayat pertandingan dan perubahan hasil yang telah tervalidasi.</p>
+            </div>
+          </div>
+
+          <article class="panel-card">
+
+            <div class="panel-header">
+              <div>
+                <h3>Riwayat Pertandingan</h3>
+                <p>Histori bersifat immutable. Koreksi dilakukan melalui menu validasi.</p>
+              </div>
+
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="search" id="historySearch" placeholder="Cari histori...">
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Pertandingan</th>
+                    <th>Skor</th>
+                    <th>Fase</th>
+                    <th>Waktu Validasi</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <tr>
+                    <td colspan="6">
+                      <div class="empty-state">
+                        <i class="bi bi-clock-history"></i>
+                        <strong>Histori masih kosong</strong>
+                        <span>Riwayat pertandingan akan tersimpan setelah validasi.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </article>
+
+        </section>
+
+        <section class="page-section" id="section-sponsors" data-page="sponsors">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">PUBLIKASI</span>
+              <h2>Sponsor</h2>
+              <p>Kelola sponsor yang ditampilkan pada halaman publik.</p>
+            </div>
+
+            <button type="button" class="btn btn-primary" data-modal="sponsorModal">
+              <i class="bi bi-plus-lg"></i>
+              Tambah Sponsor
+            </button>
+          </div>
+
+          <div class="sponsor-grid" id="sponsorGrid">
+
+            <div class="empty-state">
+              <i class="bi bi-megaphone"></i>
+              <strong>Belum ada sponsor</strong>
+              <span>Tambahkan sponsor untuk ditampilkan pada halaman publik.</span>
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="page-section" id="section-contacts-bank" data-page="contacts-bank">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">INFORMASI</span>
+              <h2>Rekening & Kontak Season</h2>
+              <p>Kelola rekening pembayaran, QR, dan kontak person untuk season aktif.</p>
+            </div>
+          </div>
+
+          <div class="two-column-grid">
+
+            <article class="panel-card">
+
+              <div class="panel-header">
+                <div>
+                  <h3>Rekening</h3>
+                  <p>Data rekening dapat digunakan untuk informasi pembayaran.</p>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm" data-modal="bankModal">
+                  <i class="bi bi-plus-lg"></i>
+                  Tambah
+                </button>
+              </div>
+
+              <div class="bank-list" id="bankList">
+                <div class="empty-state compact">
+                  <i class="bi bi-bank"></i>
+                  <strong>Belum ada rekening</strong>
+                  <span>Tambahkan rekening season.</span>
+                </div>
+              </div>
+
+            </article>
+
+            <article class="panel-card">
+
+              <div class="panel-header">
+                <div>
+                  <h3>Kontak Season</h3>
+                  <p>Tambahkan kontak person dan atur status aktif.</p>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm" data-modal="seasonContactModal">
+                  <i class="bi bi-plus-lg"></i>
+                  Tambah
+                </button>
+              </div>
+
+              <div class="season-contact-list" id="seasonContactList">
+                <div class="empty-state compact">
+                  <i class="bi bi-person-lines-fill"></i>
+                  <strong>Belum ada kontak</strong>
+                  <span>Tambahkan kontak person season.</span>
+                </div>
+              </div>
+
+            </article>
+
+          </div>
+
+        </section>
+
+        <section class="page-section" id="section-finish" data-page="finish">
+
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">FINALISASI</span>
+              <h2>Selesai</h2>
+              <p>Finalisasi season setelah seluruh rangkaian kompetisi selesai.</p>
+            </div>
+          </div>
+
+          <article class="finish-card">
+
+            <div class="finish-icon">
+              <i class="bi bi-flag-fill"></i>
+            </div>
+
+            <div class="finish-content">
+              <span class="eyebrow">FINALISASI SEASON</span>
+              <h3 id="finishSeasonName">Belum ada season aktif</h3>
+              <p>
+                Finalisasi akan menandai season sebagai selesai.
+                Data season sebelumnya tetap dapat diakses dan season baru akan berdiri secara independen.
+              </p>
+
+              <div class="finish-checklist">
+                <div class="check-item" id="finishCheckMatches">
+                  <i class="bi bi-circle"></i>
+                  <span>Seluruh pertandingan telah selesai</span>
+                </div>
+                <div class="check-item" id="finishCheckGroup">
+                  <i class="bi bi-circle"></i>
+                  <span>Fase group telah selesai</span>
+                </div>
+                <div class="check-item" id="finishCheckKnockout">
+                  <i class="bi bi-circle"></i>
+                  <span>Fase knockout telah selesai</span>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-danger btn-large" id="finishSeasonButton">
+                <i class="bi bi-flag-fill"></i>
+                Finalisasi Season
+              </button>
+            </div>
+
+          </article>
+
+        </section>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+
+  <div class="modal" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">EVENT</span>
+          <h3 id="profileModalTitle">Edit Profil Event</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="profileForm">
+
+        <input type="hidden" name="id" id="profileId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="profileName">Nama Event</label>
+            <input type="text" id="profileName" name="name" placeholder="Contoh: SENTELUK CUP" required>
+          </div>
+
+          <div class="form-group">
+            <label for="profileLogo">Logo Event</label>
+            <input type="file" id="profileLogo" name="logo" accept="image/*">
+            <small class="form-help">Logo akan digunakan sebagai identitas event.</small>
+          </div>
+
+          <div class="upload-preview" id="profileLogoUploadPreview">
+            <i class="bi bi-image"></i>
+            <span>Belum ada gambar baru</span>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="seasonModal" role="dialog" aria-modal="true" aria-labelledby="seasonModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">KOMPETISI</span>
+          <h3 id="seasonModalTitle">Tambah Season</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="seasonForm">
+
+        <input type="hidden" name="id" id="seasonId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="seasonName">Nama Season</label>
+            <input type="text" id="seasonName" name="name" placeholder="Contoh: SENTELUK CUP 2026" required>
+          </div>
+
+          <div class="form-group">
+            <label for="seasonBio">Bio / Deskripsi</label>
+            <textarea id="seasonBio" name="bio" rows="4" placeholder="Deskripsi singkat season..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="seasonEventType">Jenis Event</label>
+            <select id="seasonEventType" name="eventType" required>
+              <option value="">Pilih jenis event</option>
+              <option value="GROUP_8">Group 8</option>
+              <option value="KNOCKOUT_16">Knockout 16 Besar</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan Season
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="committeeModal" role="dialog" aria-modal="true" aria-labelledby="committeeModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PANITIA</span>
+          <h3 id="committeeModalTitle">Tambah Panitia</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="committeeForm">
+
+        <input type="hidden" name="id" id="committeeId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="committeeName">Nama</label>
+            <input type="text" id="committeeName" name="name" placeholder="Nama panitia" required>
+          </div>
+
+          <div class="form-group">
+            <label for="committeePosition">Posisi</label>
+            <select id="committeePosition" name="position" required>
+              <option value="">Pilih posisi</option>
+              <option value="Ketua Panitia">Ketua Panitia</option>
+              <option value="Wakil Ketua">Wakil Ketua</option>
+              <option value="Sekretaris">Sekretaris</option>
+              <option value="Bendahara">Bendahara</option>
+              <option value="Seksi Acara">Seksi Acara</option>
+              <option value="Seksi Pertandingan">Seksi Pertandingan</option>
+              <option value="Seksi Perlengkapan">Seksi Perlengkapan</option>
+              <option value="Seksi Konsumsi">Seksi Konsumsi</option>
+              <option value="Seksi Dokumentasi">Seksi Dokumentasi</option>
+              <option value="Seksi Keamanan">Seksi Keamanan</option>
+              <option value="Seksi Humas">Seksi Humas</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="committeePhone">Nomor Telepon</label>
+            <input type="tel" id="committeePhone" name="phone" placeholder="Opsional">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="clubModal" role="dialog" aria-modal="true" aria-labelledby="clubModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PARTISIPAN</span>
+          <h3 id="clubModalTitle">Tambah Klub</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="clubForm">
+
+        <input type="hidden" name="id" id="clubId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="clubName">Nama Klub</label>
+            <input type="text" id="clubName" name="name" placeholder="Nama klub" required>
+          </div>
+
+          <div class="form-group">
+            <label for="clubManager">Kontak Manager</label>
+            <input type="text" id="clubManager" name="managerContact" placeholder="Nama / nomor kontak manager">
+          </div>
+
+          <div class="form-group">
+            <label for="clubLogo">Logo Klub</label>
+            <input type="file" id="clubLogo" name="logo" accept="image/*">
+          </div>
+
+          <div class="upload-preview" id="clubLogoPreview">
+            <i class="bi bi-shield"></i>
+            <span>Belum ada logo</span>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan Klub
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="personModal" role="dialog" aria-modal="true" aria-labelledby="personModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PERSONEL</span>
+          <h3 id="personModalTitle">Tambah Personel</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="personForm">
+
+        <input type="hidden" name="id" id="personId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="personName">Nama</label>
+            <input type="text" id="personName" name="name" placeholder="Nama personel" required>
+          </div>
+
+          <div class="form-group">
+            <label for="personClub">Klub</label>
+            <select id="personClub" name="clubId" required>
+              <option value="">Pilih klub</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="personType">Kategori</label>
+            <select id="personType" name="type" required>
+              <option value="">Pilih kategori</option>
+              <option value="PLAYER">Pemain</option>
+              <option value="MANAGER">Manager</option>
+              <option value="OFFICIAL">Official</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="personPosition">Posisi / Title</label>
+            <input type="text" id="personPosition" name="position" placeholder="Contoh: Striker, Pelatih, Official">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal modal-wide" id="matchModal" role="dialog" aria-modal="true" aria-labelledby="matchModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PERTANDINGAN</span>
+          <h3 id="matchModalTitle">Tambah Pertandingan</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="matchForm">
+
+        <input type="hidden" name="id" id="matchId">
+
+        <div class="modal-body">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="matchPhase">Fase</label>
+              <select id="matchPhase" name="phase" required>
+                <option value="">Pilih fase</option>
+                <option value="GROUP">Group</option>
+                <option value="KNOCKOUT">Knockout</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="matchRound">Babak</label>
+              <select id="matchRound" name="round">
+                <option value="">Pilih babak</option>
+                <option value="GROUP">Group</option>
+                <option value="ROUND_OF_16">16 Besar</option>
+                <option value="QUARTER_FINAL">Perempat Final</option>
+                <option value="SEMI_FINAL">Semifinal</option>
+                <option value="FINAL">Final</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="matchDate">Tanggal</label>
+              <input type="date" id="matchDate" name="date" required>
+            </div>
+
+            <div class="form-group">
+              <label for="matchTime">Waktu WITA</label>
+              <input type="time" id="matchTime" name="time" required>
+              <small class="form-help">Gunakan format 24 jam WITA.</small>
+            </div>
+
+          </div>
+
+          <div class="match-team-editor">
+
+            <div class="match-team-field">
+              <span class="team-label">HOME</span>
+              <div class="form-group">
+                <label for="matchHome">Klub Home</label>
+                <select id="matchHome" name="homeClubId">
+                  <option value="">Pilih klub home</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="match-vs">
+              <span>VS</span>
+            </div>
+
+            <div class="match-team-field">
+              <span class="team-label">AWAY</span>
+              <div class="form-group">
+                <label for="matchAway">Klub Away</label>
+                <select id="matchAway" name="awayClubId">
+                  <option value="">Pilih klub away</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="knockout-source-box" id="knockoutSourceBox">
+            <i class="bi bi-diagram-3"></i>
+            <div>
+              <strong>Knockout</strong>
+              <span>Peserta knockout akan mengikuti bracket yang sudah dibuat.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-calendar-plus"></i>
+            Simpan Pertandingan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal modal-wide" id="validationModal" role="dialog" aria-modal="true" aria-labelledby="validationModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">VALIDASI</span>
+          <h3 id="validationModalTitle">Validasi Pertandingan</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="validationForm">
+
+        <input type="hidden" name="matchId" id="validationMatchId">
+
+        <div class="modal-body">
+
+          <div class="validation-match-header">
+            <div>
+              <span id="validationMatchDate">-</span>
+              <strong id="validationMatchTitle">Home vs Away</strong>
+            </div>
+            <span class="status-badge status-info" id="validationMatchPhase">GROUP</span>
+          </div>
+
+          <div class="score-editor">
+
+            <div class="score-team">
+              <span id="validationHomeName">HOME</span>
+              <input type="number" min="0" id="validationHomeScore" name="homeScore" value="0" required>
+            </div>
+
+            <div class="score-separator">:</div>
+
+            <div class="score-team">
+              <span id="validationAwayName">AWAY</span>
+              <input type="number" min="0" id="validationAwayScore" name="awayScore" value="0" required>
+            </div>
+
+          </div>
+
+          <div class="validation-section">
+            <div class="validation-section-header">
+              <div>
+                <h4>Babak Pertama</h4>
+                <span>Masukkan skor saat halftime.</span>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="validationHomeHalf">Home</label>
+                <input type="number" min="0" id="validationHomeHalf" name="homeHalf" value="0">
+              </div>
+
+              <div class="form-group">
+                <label for="validationAwayHalf">Away</label>
+                <input type="number" min="0" id="validationAwayHalf" name="awayHalf" value="0">
+              </div>
+            </div>
+          </div>
+
+          <div class="validation-section">
+            <div class="validation-section-header">
+              <div>
+                <h4>Pencetak Gol</h4>
+                <span>Daftar pemain otomatis mengikuti klub pertandingan.</span>
+              </div>
+              <button type="button" class="btn btn-outline btn-sm" id="addGoalButton">
+                <i class="bi bi-plus-lg"></i>
+                Tambah Gol
+              </button>
+            </div>
+
+            <div class="goal-list" id="goalList">
+              <div class="empty-state compact">
+                <i class="bi bi-bullseye"></i>
+                <strong>Belum ada data gol</strong>
+                <span>Tambahkan pencetak gol jika diperlukan.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="validation-section">
+            <div class="validation-section-header">
+              <div>
+                <h4>Kartu</h4>
+                <span>Pemain otomatis mengikuti klub pertandingan.</span>
+              </div>
+              <button type="button" class="btn btn-outline btn-sm" id="addCardButton">
+                <i class="bi bi-plus-lg"></i>
+                Tambah Kartu
+              </button>
+            </div>
+
+            <div class="card-list" id="cardList">
+              <div class="empty-state compact">
+                <i class="bi bi-card-text"></i>
+                <strong>Belum ada kartu</strong>
+                <span>Tambahkan kartu jika terdapat pelanggaran.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="penalty-section" id="penaltySection">
+
+            <div class="validation-section-header">
+              <div>
+                <h4>Penalty Shootout</h4>
+                <span>Digunakan jika knockout berakhir seri.</span>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="validationHomePenalty">Penalty Home</label>
+                <input type="number" min="0" id="validationHomePenalty" name="homePenalty" value="0">
+              </div>
+
+              <div class="form-group">
+                <label for="validationAwayPenalty">Penalty Away</label>
+                <input type="number" min="0" id="validationAwayPenalty" name="awayPenalty" value="0">
+              </div>
+            </div>
+
+            <div class="penalty-info">
+              <i class="bi bi-info-circle"></i>
+              <span>Gol penalty shootout tidak dihitung sebagai pencetak gol pertandingan.</span>
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label for="validationNotes">Catatan</label>
+            <textarea id="validationNotes" name="notes" rows="3" placeholder="Catatan validasi..."></textarea>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-outline" id="postponeFromValidationButton">
+            <i class="bi bi-calendar2-minus"></i>
+            Tunda
+          </button>
+
+          <button type="button" class="btn btn-outline" data-close-modal>
+            Batal
+          </button>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check2-circle"></i>
+            Validasi
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="postponeModal" role="dialog" aria-modal="true" aria-labelledby="postponeModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">JADWAL</span>
+          <h3 id="postponeModalTitle">Tunda Pertandingan</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="postponeForm">
+
+        <input type="hidden" name="matchId" id="postponeMatchId">
+
+        <div class="modal-body">
+
+          <div class="postpone-match">
+            <span>Pertandingan</span>
+            <strong id="postponeMatchName">Home vs Away</strong>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="postponeDate">Tanggal Baru</label>
+              <input type="date" id="postponeDate" name="postponedDate" required>
+            </div>
+
+            <div class="form-group">
+              <label for="postponeTime">Waktu Baru WITA</label>
+              <input type="time" id="postponeTime" name="postponedTime" required>
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label for="postponeNotes">Alasan / Catatan</label>
+            <textarea id="postponeNotes" name="notes" rows="4" placeholder="Masukkan alasan penundaan..." required></textarea>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-calendar-check"></i>
+            Simpan Penundaan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="sponsorModal" role="dialog" aria-modal="true" aria-labelledby="sponsorModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PUBLIKASI</span>
+          <h3 id="sponsorModalTitle">Tambah Sponsor</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="sponsorForm">
+
+        <input type="hidden" name="id" id="sponsorId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="sponsorName">Nama Sponsor</label>
+            <input type="text" id="sponsorName" name="name" placeholder="Nama sponsor" required>
+          </div>
+
+          <div class="form-group">
+            <label for="sponsorLogo">Logo Sponsor</label>
+            <input type="file" id="sponsorLogo" name="logo" accept="image/*">
+          </div>
+
+          <div class="form-group toggle-field">
+            <div>
+              <label for="sponsorActive">Tampilkan di Guest</label>
+              <small class="form-help">Sponsor aktif akan ditampilkan pada halaman publik.</small>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="sponsorActive" name="active" checked>
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan Sponsor
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="bankModal" role="dialog" aria-modal="true" aria-labelledby="bankModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PEMBAYARAN</span>
+          <h3 id="bankModalTitle">Tambah Rekening</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="bankForm">
+
+        <input type="hidden" name="id" id="bankId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="bankName">Nama Bank</label>
+            <input type="text" id="bankName" name="bankName" placeholder="Contoh: BRI" required>
+          </div>
+
+          <div class="form-group">
+            <label for="bankAccountName">Nama Pemilik Rekening</label>
+            <input type="text" id="bankAccountName" name="accountName" placeholder="Nama pemilik rekening" required>
+          </div>
+
+          <div class="form-group">
+            <label for="bankAccountNumber">Nomor Rekening</label>
+            <input type="text" id="bankAccountNumber" name="accountNumber" placeholder="Nomor rekening" required>
+          </div>
+
+          <div class="form-group">
+            <label for="bankQr">QR Pembayaran</label>
+            <input type="file" id="bankQr" name="qr" accept="image/*">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan Rekening
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="seasonContactModal" role="dialog" aria-modal="true" aria-labelledby="seasonContactModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">KONTAK</span>
+          <h3 id="seasonContactModalTitle">Tambah Kontak Season</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="seasonContactForm">
+
+        <input type="hidden" name="id" id="seasonContactId">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="seasonContactType">Jenis Kontak</label>
+            <select id="seasonContactType" name="type" required>
+              <option value="">Pilih jenis</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Telepon">Telepon</option>
+              <option value="Email">Email</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="seasonContactName">Nama / Keterangan</label>
+            <input type="text" id="seasonContactName" name="name" placeholder="Contoh: Sekretariat" required>
+          </div>
+
+          <div class="form-group">
+            <label for="seasonContactLink">Nomor / Link</label>
+            <input type="text" id="seasonContactLink" name="link" placeholder="Nomor atau URL kontak" required>
+          </div>
+
+          <div class="form-group toggle-field">
+            <div>
+              <label for="seasonContactActive">Aktif</label>
+              <small class="form-help">Kontak aktif dapat ditampilkan kepada publik.</small>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="seasonContactActive" name="active" checked>
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg"></i>
+            Simpan Kontak
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="goalModal" role="dialog" aria-modal="true" aria-labelledby="goalModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">VALIDASI</span>
+          <h3 id="goalModalTitle">Tambah Pencetak Gol</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="goalForm">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="goalClub">Klub</label>
+            <select id="goalClub" name="clubId" required>
+              <option value="">Pilih klub</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="goalPlayer">Pemain</label>
+            <select id="goalPlayer" name="playerId" required>
+              <option value="">Pilih pemain</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="goalMinute">Menit</label>
+            <input type="number" min="1" max="130" id="goalMinute" name="minute" placeholder="Contoh: 23" required>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            Tambah Gol
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="cardModal" role="dialog" aria-modal="true" aria-labelledby="cardModalTitle">
+    <div class="modal-dialog">
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">VALIDASI</span>
+          <h3 id="cardModalTitle">Tambah Kartu</h3>
+        </div>
+        <button type="button" class="modal-close" data-close-modal>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="cardForm">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="cardClub">Klub</label>
+            <select id="cardClub" name="clubId" required>
+              <option value="">Pilih klub</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cardPlayer">Pemain</label>
+            <select id="cardPlayer" name="playerId" required>
+              <option value="">Pilih pemain</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cardType">Jenis Kartu</label>
+            <select id="cardType" name="cardType" required>
+              <option value="">Pilih kartu</option>
+              <option value="YELLOW">Kuning</option>
+              <option value="RED">Merah</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cardMinute">Menit</label>
+            <input type="number" min="1" max="130" id="cardMinute" name="minute" placeholder="Contoh: 45" required>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            Tambah Kartu
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+    <div class="modal-dialog modal-confirm">
+
+      <div class="confirm-icon" id="confirmIcon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+
+      <div class="modal-header centered">
+        <div>
+          <h3 id="confirmModalTitle">Konfirmasi</h3>
+          <p id="confirmModalMessage">Apakah Anda yakin ingin melanjutkan?</p>
+        </div>
+      </div>
+
+      <div class="modal-footer centered">
+        <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+        <button type="button" class="btn btn-danger" id="confirmActionButton">
+          Ya, Lanjutkan
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
+      <strong id="loadingText">Memuat...</strong>
+      <span>Mohon tunggu sebentar.</span>
+    </div>
+  </div>
+
+  <script src="../backend/script.js"></script>
+  <script src="admin.js"></script>
+
+</body>
+</html>

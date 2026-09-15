@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jurnal Kasent - Media Informasi Kasent / Kanak Senteluk">
+  <title>Jurnal Kasent</title>
+  <link rel="icon" href="logo/jurnalkasent.jpeg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar">
+      <a href="#home" class="navbar-brand">
+        <img src="logo/jurnalkasent.jpeg" alt="Jurnal Kasent">
+        <span class="navbar-brand-text">
+          <span class="navbar-brand-title">JURNAL KASENT</span>
+          <span class="navbar-brand-subtitle">Media Informasi Kasent</span>
+        </span>
+      </a>
+
+      <button
+        type="button"
+        class="navbar-toggle"
+        id="navbarToggle"
+        aria-label="Buka menu"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+
+      <ul class="navbar-menu" id="navbarMenu">
+        <li>
+          <a href="#home" class="active">Home</a>
+        </li>
+        <li>
+          <a href="#event">Event</a>
+        </li>
+        <li>
+          <a href="#jadwal">Jadwal</a>
+        </li>
+        <li>
+          <a href="#hasil">Hasil</a>
+        </li>
+        <li>
+          <a href="#kontak">Kontak</a>
+        </li>
+      </ul>
+
+      <button
+        type="button"
+        class="navbar-login"
+        data-open-login
+      >
+        <i class="bi bi-box-arrow-in-right"></i>
+        Login
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+  <div class="container hero-content">
+    <div class="hero-grid">
+
+      <div>
+        <div class="hero-kicker">
+          <i class="bi bi-broadcast"></i>
+          Media Informasi Kasent
+        </div>
+
+        <h1 class="hero-title">
+          Jurnal <span>Kasent</span>
+        </h1>
+
+        <p class="hero-description">
+          Media informasi Kasent / Kanak Senteluk yang mencakup
+          Senteluk Lauq dan Senteluk Daye.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#event" class="btn-primary">
+            <i class="bi bi-calendar-event"></i>
+            Lihat Event
+          </a>
+
+          <a href="#hasil" class="btn-outline">
+            <i class="bi bi-trophy"></i>
+            Hasil Pertandingan
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <img
+          src="logo/jurnalkasent.jpeg"
+          alt="Logo Jurnal Kasent"
+          class="hero-card-logo"
+        >
+
+        <h2 class="hero-card-title">
+          Informasi Kasent dalam satu ruang
+        </h2>
+
+        <p class="hero-card-text">
+          Informasi, kegiatan, dokumentasi, dan event
+          masyarakat Kasent disajikan dengan lebih
+          terstruktur dan mudah diakses.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section section-light" id="tentang">
+  <div class="container">
+
+    <div class="about-grid">
+
+      <div class="about-logo-box">
+        <img
+          src="logo/jurnalkasent.jpeg"
+          alt="Jurnal Kasent"
+        >
+      </div>
+
+      <div class="about-content">
+        <div class="section-heading">
+          <div class="section-kicker">
+            Tentang Kami
+          </div>
+
+          <h2 class="section-title">
+            Jurnal Kasent
+          </h2>
+        </div>
+
+        <p>
+          Jurnal Kasent adalah media informasi Kasent /
+          Kanak Senteluk yang mencakup Senteluk Lauq dan
+          Senteluk Daye.
+        </p>
+
+        <p>
+          Berawal dari media Instagram, Jurnal Kasent hadir
+          sebagai wadah untuk berbagi informasi, kegiatan,
+          dan berbagai hal yang berkaitan dengan masyarakat
+          serta lingkungan Kasent.
+        </p>
+
+        <p>
+          Website ini dikembangkan sebagai ruang digital
+          untuk melengkapi media informasi Jurnal Kasent
+          agar informasi dan dokumentasi dapat disajikan
+          dengan lebih terstruktur dan mudah diakses.
+        </p>
+
+        <div class="about-highlight">
+          Jurnal Kasent — Media Informasi Kasent.
+          <br>
+          Website supported by KEEKI.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="event">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-kicker">
+        Event
+      </div>
+
+      <h2 class="section-title">
+        Event yang Sedang Berjalan
+      </h2>
+
+      <p class="section-description">
+        Informasi event dan season yang sedang aktif
+        ditampilkan di sini.
+      </p>
+    </div>
+
+    <div
+      class="events-grid"
+      id="eventsContainer"
+    >
+      <div class="empty-state">
+        <i class="bi bi-calendar-event"></i>
+        <span>Memuat event...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section-light" id="jadwal">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-kicker">
+        Pertandingan
+      </div>
+
+      <h2 class="section-title">
+        Jadwal Pertandingan
+      </h2>
+
+      <p class="section-description">
+        Jadwal pertandingan terbaru ditampilkan dari
+        yang paling dekat.
+      </p>
+    </div>
+
+    <div class="match-toolbar">
+      <div>
+        <strong id="scheduleCount">
+          0 pertandingan
+        </strong>
+      </div>
+
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input
+          type="search"
+          id="scheduleSearch"
+          placeholder="Cari pertandingan..."
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div
+      class="match-list"
+      id="scheduleContainer"
+    >
+      <div class="empty-state">
+        <i class="bi bi-calendar2-week"></i>
+        <span>Memuat jadwal...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="hasil">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-kicker">
+        Hasil
+      </div>
+
+      <h2 class="section-title">
+        Hasil Pertandingan
+      </h2>
+
+      <p class="section-description">
+        Hasil pertandingan terbaru beserta skor babak
+        pertama dan pencetak gol.
+      </p>
+    </div>
+
+    <div class="match-toolbar">
+      <div>
+        <strong id="resultCount">
+          0 pertandingan
+        </strong>
+      </div>
+
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input
+          type="search"
+          id="resultSearch"
+          placeholder="Cari hasil pertandingan..."
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div
+      class="results-grid"
+      id="resultsContainer"
+    >
+      <div class="empty-state">
+        <i class="bi bi-trophy"></i>
+        <span>Memuat hasil...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="sponsors-section">
+  <div class="container">
+
+    <div class="section-heading" style="margin-inline:auto;text-align:center;">
+      <div class="section-kicker">
+        Pendukung
+      </div>
+
+      <h2 class="section-title">
+        Sponsorship
+      </h2>
+    </div>
+
+    <div
+      class="sponsors-list"
+      id="sponsorsContainer"
+    >
+      <div class="empty-state">
+        <span>Memuat sponsor...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section-light" id="kontak">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-kicker">
+        Hubungi Kami
+      </div>
+
+      <h2 class="section-title">
+        Kontak Jurnal Kasent
+      </h2>
+
+      <p class="section-description">
+        Ikuti dan hubungi Jurnal Kasent melalui kanal
+        yang tersedia.
+      </p>
+    </div>
+
+    <div
+      class="contacts-grid"
+      id="contactsContainer"
+    >
+      <div class="empty-state">
+        <i class="bi bi-person-lines-fill"></i>
+        <span>Memuat kontak...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div>
+        <div class="footer-brand">
+          <img
+            src="logo/jurnalkasent.jpeg"
+            alt="Jurnal Kasent"
+          >
+
+          <div>
+            <div class="footer-brand-title">
+              JURNAL KASENT
+            </div>
+          </div>
+        </div>
+
+        <p class="footer-description">
+          Jurnal Kasent — Media Informasi Kasent.
+          Website supported by KEEKI.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="footer-title">
+          Navigasi
+        </h3>
+
+        <ul class="footer-links">
+          <li>
+            <a href="#home">Home</a>
+          </li>
+          <li>
+            <a href="#event">Event</a>
+          </li>
+          <li>
+            <a href="#jadwal">Jadwal</a>
+          </li>
+          <li>
+            <a href="#hasil">Hasil</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="footer-title">
+          Informasi
+        </h3>
+
+        <ul class="footer-links">
+          <li>
+            <a href="#tentang">Tentang Jurnal Kasent</a>
+          </li>
+          <li>
+            <a href="#kontak">Kontak</a>
+          </li>
+          <li>
+            <a href="#" data-open-login>Login Admin</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>
+        © <span id="footerYear"></span> Jurnal Kasent.
+      </span>
+
+      <span>
+        Website supported by KEEKI.
+      </span>
+    </div>
+
+  </div>
+</footer>
+
+<div
+  class="login-modal"
+  id="loginModal"
+  aria-hidden="true"
+>
+  <div class="login-modal-card">
+
+    <div class="login-modal-header">
+      <div>
+        <h2 class="login-modal-title">
+          Login
+        </h2>
+
+        <p class="login-modal-description">
+          Masuk ke halaman pengelolaan Jurnal Kasent.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="login-close"
+        id="loginClose"
+        aria-label="Tutup"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div
+      class="login-error"
+      id="loginError"
+    ></div>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+        <label
+          for="loginUsername"
+          class="form-label"
+        >
+          Username
+        </label>
+
+        <input
+          type="text"
+          id="loginUsername"
+          class="form-control"
+          placeholder="Masukkan username"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label
+          for="loginPassword"
+          class="form-label"
+        >
+          Password
+        </label>
+
+        <div class="password-field">
+          <input
+            type="password"
+            id="loginPassword"
+            class="form-control"
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+          >
+
+          <button
+            type="button"
+            class="password-toggle"
+            id="passwordToggle"
+            aria-label="Tampilkan password"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="login-submit"
+        id="loginSubmit"
+      >
+        <i class="bi bi-box-arrow-in-right"></i>
+        Masuk
+      </button>
+
+    </form>
+
+  </div>
+</div>
+
+<script src="backend/script.js"></script>
+
+<script>
+const Guest = {
+  data: {
+    events: [],
+    seasons: [],
+    contacts: [],
+    matches: [],
+    sponsors: []
+  },
+
+  async init() {
+    this.bindNavigation();
+    this.bindLogin();
+    this.bindSearch();
+    this.setYear();
+    await this.load();
+  },
+
+  async load() {
+    try {
+      const result = await App.publicData();
+
+      if (!result.success) {
+        showToast(
+          result.message || 'Data gagal dimuat.',
+          'error'
+        );
+        return;
+      }
+
+      this.data = result.data || this.data;
+
+      this.renderEvents();
+      this.renderSchedules();
+      this.renderResults();
+      this.renderContacts();
+      this.renderSponsors();
+    } catch (error) {
+      showToast(
+        'Data publik gagal dimuat.',
+        'error'
+      );
+    }
+  },
+
+  bindNavigation() {
+    const toggle = qs('#navbarToggle');
+    const menu = qs('#navbarMenu');
+
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        menu.classList.toggle('show');
+      });
+
+      qsa('a', menu).forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('show');
+        });
+      });
+    }
+
+    qsa('.navbar-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        qsa('.navbar-menu a').forEach(item => {
+          item.classList.remove('active');
+        });
+
+        link.classList.add('active');
+      });
+    });
+  },
+
+  bindLogin() {
+    const modal = qs('#loginModal');
+    const close = qs('#loginClose');
+    const form = qs('#loginForm');
+    const passwordToggle = qs('#passwordToggle');
+    const passwordInput = qs('#loginPassword');
+
+    qsa('[data-open-login]').forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
+
+        if (!modal) return;
+
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+
+        const username = qs('#loginUsername');
+
+        if (username) {
+          setTimeout(() => {
+            username.focus();
+          }, 100);
+        }
+
+        document.body.classList.add('modal-open');
+      });
+    });
+
+    if (close) {
+      close.addEventListener('click', () => {
+        this.closeLogin();
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', event => {
+        if (event.target === modal) {
+          this.closeLogin();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', event => {
+      if (
+        event.key === 'Escape' &&
+        modal &&
+        modal.classList.contains('show')
+      ) {
+        this.closeLogin();
+      }
+    });
+
+    if (passwordToggle && passwordInput) {
+      passwordToggle.addEventListener('click', () => {
+        const isPassword =
+          passwordInput.type === 'password';
+
+        passwordInput.type =
+          isPassword ? 'text' : 'password';
+
+        passwordToggle.innerHTML = isPassword
+          ? '<i class="bi bi-eye-slash"></i>'
+          : '<i class="bi bi-eye"></i>';
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+
+        const username =
+          qs('#loginUsername')?.value.trim() || '';
+
+        const password =
+          qs('#loginPassword')?.value || '';
+
+        const errorBox =
+          qs('#loginError');
+
+        const submit =
+          qs('#loginSubmit');
+
+        if (errorBox) {
+          errorBox.classList.remove('show');
+          errorBox.textContent = '';
+        }
+
+        if (submit) {
+          submit.disabled = true;
+          submit.innerHTML = `
+            <i class="bi bi-arrow-repeat"></i>
+            Memproses...
+          `;
+        }
+
+        const result =
+          await App.login(username, password);
+
+        if (submit) {
+          submit.disabled = false;
+          submit.innerHTML = `
+            <i class="bi bi-box-arrow-in-right"></i>
+            Masuk
+          `;
+        }
+
+        if (!result.success) {
+          if (errorBox) {
+            errorBox.textContent =
+              result.message ||
+              'Login gagal.';
+
+            errorBox.classList.add('show');
+          }
+
+          return;
+        }
+
+        const user = result.user;
+
+        if (user.role === 'master') {
+          window.location.href =
+            'master admin/masteradmin.html';
+          return;
+        }
+
+        window.location.href =
+          'admin event/admin.html';
+      });
+    }
+  },
+
+  closeLogin() {
+    const modal = qs('#loginModal');
+
+    if (!modal) return;
+
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+
+    document.body.classList.remove('modal-open');
+  },
+
+  bindSearch() {
+    const scheduleSearch =
+      qs('#scheduleSearch');
+
+    const resultSearch =
+      qs('#resultSearch');
+
+    if (scheduleSearch) {
+      scheduleSearch.addEventListener('input', () => {
+        this.renderSchedules(
+          scheduleSearch.value
+        );
+      });
+    }
+
+    if (resultSearch) {
+      resultSearch.addEventListener('input', () => {
+        this.renderResults(
+          resultSearch.value
+        );
+      });
+    }
+  },
+
+  renderEvents() {
+    const container =
+      qs('#eventsContainer');
+
+    if (!container) return;
+
+    const events = this.data.events || [];
+    const seasons = this.data.seasons || [];
+
+    if (!events.length) {
+      container.innerHTML =
+        emptyState(
+          'Belum ada event yang sedang berjalan.'
+        );
+      return;
+    }
+
+    const activeEvents = events
+      .map(event => {
+        const eventSeasons =
+          seasons.filter(
+            season =>
+              season.eventId === event.id &&
+              !toBoolean(season.completed)
+          );
+
+        return {
+          ...event,
+          seasons: eventSeasons
+        };
+      })
+      .filter(event => event.seasons.length);
+
+    if (!activeEvents.length) {
+      container.innerHTML =
+        emptyState(
+          'Belum ada event yang sedang berjalan.'
+        );
+      return;
+    }
+
+    container.innerHTML =
+      activeEvents.map(event => {
+        const season = event.seasons[0];
+
+        return `
+          <article class="event-card">
+            <img
+              src="${escapeHtml(
+                event.logoUrl ||
+                'logo/jurnalkasent.jpeg'
+              )}"
+              alt="${escapeHtml(event.name)}"
+              class="event-logo"
+              onerror="this.src='logo/jurnalkasent.jpeg'"
+            >
+
+            <h3 class="event-name">
+              ${escapeHtml(event.name)}
+            </h3>
+
+            <div class="event-season">
+              ${escapeHtml(season.name)}
+            </div>
+
+            <div class="event-meta">
+              <span class="meta-badge">
+                <i class="bi bi-circle-fill"></i>
+                Aktif
+              </span>
+
+              <span class="meta-badge">
+                <i class="bi bi-diagram-3"></i>
+                ${escapeHtml(
+                  season.eventType === 'group8'
+                    ? 'Group 8'
+                    : 'Knockout 16'
+                )}
+              </span>
+            </div>
+          </article>
+        `;
+      }).join('');
+  },
+
+  getSortedMatches() {
+    const matches =
+      [...(this.data.matches || [])];
+
+    return matches.sort((a, b) => {
+      const dateA =
+        this.matchTimestamp(a);
+
+      const dateB =
+        this.matchTimestamp(b);
+
+      return dateA - dateB;
+    });
+  },
+
+  matchTimestamp(match) {
+    const date =
+      match.postponedDate ||
+      match.matchDate;
+
+    const time =
+      match.postponedTime ||
+      match.matchTime ||
+      '00:00';
+
+    if (!date) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    const value =
+      new Date(
+        `${date}T${String(time).slice(0, 5)}:00+08:00`
+      ).getTime();
+
+    return Number.isNaN(value)
+      ? Number.MAX_SAFE_INTEGER
+      : value;
+  },
+
+  renderSchedules(search = '') {
+    const container =
+      qs('#scheduleContainer');
+
+    const count =
+      qs('#scheduleCount');
+
+    if (!container) return;
+
+    const query =
+      String(search).toLowerCase().trim();
+
+    let matches =
+      this.getSortedMatches()
+        .filter(match =>
+          match.status === 'scheduled' ||
+          match.status === 'postponed'
+        );
+
+    if (query) {
+      matches = matches.filter(match => {
+        const text = [
+          match.homeClubName,
+          match.awayClubName,
+          match.groupName,
+          match.stage,
+          match.matchType
+        ]
+          .join(' ')
+          .toLowerCase();
+
+        return text.includes(query);
+      });
+    }
+
+    if (count) {
+      count.textContent =
+        `${matches.length} pertandingan`;
+    }
+
+    if (!matches.length) {
+      container.innerHTML =
+        emptyState(
+          'Tidak ada jadwal pertandingan.'
+        );
+      return;
+    }
+
+    container.innerHTML =
+      matches.map(match => {
+        const date =
+          match.postponedDate ||
+          match.matchDate;
+
+        const time =
+          match.postponedTime ||
+          match.matchTime;
+
+        return `
+          <article class="match-card">
+
+            <div>
+              <div class="match-date">
+                ${escapeHtml(
+                  formatShortDate(date)
+                )}
+              </div>
+
+              <div class="match-time">
+                ${escapeHtml(
+                  formatTime(time)
+                )} WITA
+              </div>
+            </div>
+
+            <div class="match-teams">
+
+              <div class="team">
+                <img
+                  src="${escapeHtml(
+                    this.clubLogo(
+                      match.homeClubId
+                    )
+                  )}"
+                  alt=""
+                  class="team-logo"
+                  onerror="this.src='logo/jurnalkasent.jpeg'"
+                >
+
+                <span class="team-name">
+                  ${escapeHtml(
+                    match.homeClubName ||
+                    'TBD'
+                  )}
+                </span>
+              </div>
+
+              <div class="match-vs">
+                VS
+              </div>
+
+              <div class="team team-away">
+                <span class="team-name">
+                  ${escapeHtml(
+                    match.awayClubName ||
+                    'TBD'
+                  )}
+                </span>
+
+                <img
+                  src="${escapeHtml(
+                    this.clubLogo(
+                      match.awayClubId
+                    )
+                  )}"
+                  alt=""
+                  class="team-logo"
+                  onerror="this.src='logo/jurnalkasent.jpeg'"
+                >
+              </div>
+
+            </div>
+
+            <div class="match-status">
+              ${
+                match.status === 'postponed'
+                  ? statusBadge('postponed')
+                  : statusBadge('scheduled')
+              }
+            </div>
+
+          </article>
+        `;
+      }).join('');
+  },
+
+  renderResults(search = '') {
+    const container =
+      qs('#resultsContainer');
+
+    const count =
+      qs('#resultCount');
+
+    if (!container) return;
+
+    const query =
+      String(search).toLowerCase().trim();
+
+    let matches =
+      [...(this.data.matches || [])]
+        .filter(
+          match =>
+            match.status === 'validated'
+        )
+        .sort(
+          (a, b) =>
+            this.matchTimestamp(b) -
+            this.matchTimestamp(a)
+        );
+
+    if (query) {
+      matches = matches.filter(match => {
+        const text = [
+          match.homeClubName,
+          match.awayClubName,
+          match.groupName,
+          match.stage
+        ]
+          .join(' ')
+          .toLowerCase();
+
+        return text.includes(query);
+      });
+    }
+
+    if (count) {
+      count.textContent =
+        `${matches.length} pertandingan`;
+    }
+
+    if (!matches.length) {
+      container.innerHTML =
+        emptyState(
+          'Belum ada hasil pertandingan.'
+        );
+      return;
+    }
+
+    container.innerHTML =
+      matches.map(match => {
+        const validation =
+          match.validation || {};
+
+        const goals =
+          match.goals || [];
+
+        return `
+          <article class="result-card">
+
+            <div class="result-header">
+              <span class="result-date">
+                ${escapeHtml(
+                  formatShortDate(
+                    match.matchDate
+                  )
+                )}
+              </span>
+
+              <span class="result-stage">
+                ${escapeHtml(
+                  match.stage ||
+                  match.groupName ||
+                  'Pertandingan'
+                )}
+              </span>
+            </div>
+
+            <div class="result-scoreboard">
+
+              <div class="result-team">
+                <img
+                  src="${escapeHtml(
+                    this.clubLogo(
+                      match.homeClubId
+                    )
+                  )}"
+                  alt=""
+                  class="team-logo"
+                  onerror="this.src='logo/jurnalkasent.jpeg'"
+                >
+
+                <span class="result-team-name">
+                  ${escapeHtml(
+                    match.homeClubName ||
+                    'TBD'
+                  )}
+                </span>
+              </div>
+
+              <div class="result-score">
+                <div class="full-score">
+                  ${Number(
+                    validation.fullHome || 0
+                  )}
+                  -
+                  ${Number(
+                    validation.fullAway || 0
+                  )}
+                </div>
+
+                <div class="half-score">
+                  HT
+                  ${Number(
+                    validation.halfHome || 0
+                  )}
+                  -
+                  ${Number(
+                    validation.halfAway || 0
+                  )}
+                </div>
+              </div>
+
+              <div class="result-team">
+                <img
+                  src="${escapeHtml(
+                    this.clubLogo(
+                      match.awayClubId
+                    )
+                  )}"
+                  alt=""
+                  class="team-logo"
+                  onerror="this.src='logo/jurnalkasent.jpeg'"
+                >
+
+                <span class="result-team-name">
+                  ${escapeHtml(
+                    match.awayClubName ||
+                    'TBD'
+                  )}
+                </span>
+              </div>
+
+            </div>
+
+            <div class="result-details">
+
+              <div class="detail-box">
+                <div class="detail-title">
+                  Pencetak Gol
+                </div>
+
+                <div class="scorer-list">
+                  ${
+                    goals.length
+                      ? goals.map(goal => `
+                        <span class="scorer-item">
+                          <i class="bi bi-soccer"></i>
+                          ${escapeHtml(
+                            goal.playerName
+                          )}
+                          ${
+                            goal.minute
+                              ? ` ${escapeHtml(
+                                  goal.minute
+                                )}'`
+                              : ''
+                          }
+                        </span>
+                      `).join('')
+                      : `
+                        <span class="scorer-item">
+                          Tidak ada gol
+                        </span>
+                      `
+                  }
+                </div>
+              </div>
+
+              <div class="detail-box">
+                <div class="detail-title">
+                  Pertandingan
+                </div>
+
+                <div class="scorer-list">
+                  <span class="scorer-item">
+                    <i class="bi bi-calendar3"></i>
+                    ${escapeHtml(
+                      formatShortDate(
+                        match.matchDate
+                      )
+                    )}
+                  </span>
+
+                  <span class="scorer-item">
+                    <i class="bi bi-clock"></i>
+                    ${escapeHtml(
+                      formatTime(
+                        match.matchTime
+                      )
+                    )} WITA
+                  </span>
+
+                  ${
+                    validation.penaltyHome ||
+                    validation.penaltyAway
+                      ? `
+                        <span class="scorer-item">
+                          <i class="bi bi-bullseye"></i>
+                          Penalti
+                          ${Number(
+                            validation.penaltyHome || 0
+                          )}
+                          -
+                          ${Number(
+                            validation.penaltyAway || 0
+                          )}
+                        </span>
+                      `
+                      : ''
+                  }
+                </div>
+              </div>
+
+            </div>
+
+          </article>
+        `;
+      }).join('');
+  },
+
+  renderContacts() {
+    const container =
+      qs('#contactsContainer');
+
+    if (!container) return;
+
+    const contacts =
+      this.data.contacts || [];
+
+    if (!contacts.length) {
+      container.innerHTML =
+        emptyState(
+          'Belum ada kontak yang tersedia.'
+        );
+      return;
+    }
+
+    container.innerHTML =
+      contacts.map(contact => {
+        return `
+          <a
+            href="${escapeHtml(
+              contact.link || '#'
+            )}"
+            class="contact-card"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="contact-icon">
+              <i class="${this.contactIcon(
+                contact.type
+              )}"></i>
+            </span>
+
+            <span class="contact-content">
+              <span class="contact-type">
+                ${escapeHtml(
+                  contact.type || 'Kontak'
+                )}
+              </span>
+
+              <span class="contact-name">
+                ${escapeHtml(
+                  contact.name || '-'
+                )}
+              </span>
+            </span>
+          </a>
+        `;
+      }).join('');
+  },
+
+  renderSponsors() {
+    const container =
+      qs('#sponsorsContainer');
+
+    if (!container) return;
+
+    const sponsors =
+      this.data.sponsors || [];
+
+    if (!sponsors.length) {
+      container.innerHTML =
+        '<span style="color:#697386;font-size:.85rem;">Belum ada sponsor.</span>';
+      return;
+    }
+
+    container.innerHTML =
+      sponsors.map(sponsor => {
+        return `
+          <div
+            class="sponsor-item"
+            title="${escapeHtml(
+              sponsor.name
+            )}"
+          >
+            <img
+              src="${escapeHtml(
+                sponsor.logoUrl ||
+                'logo/jurnalkasent.jpeg'
+              )}"
+              alt="${escapeHtml(
+                sponsor.name
+              )}"
+              onerror="this.src='logo/jurnalkasent.jpeg'"
+            >
+          </div>
+        `;
+      }).join('');
+  },
+
+  clubLogo(clubId) {
+    const club =
+      (this.data.clubs || []).find(
+        item => item.id === clubId
+      );
+
+    return club?.logoUrl ||
+      'logo/jurnalkasent.jpeg';
+  },
+
+  contactIcon(type) {
+    const value =
+      String(type || '')
+        .toLowerCase();
+
+    if (value.includes('whatsapp')) {
+      return 'bi bi-whatsapp';
+    }
+
+    if (value.includes('instagram')) {
+      return 'bi bi-instagram';
+    }
+
+    if (value.includes('facebook')) {
+      return 'bi bi-facebook';
+    }
+
+    if (value.includes('youtube')) {
+      return 'bi bi-youtube';
+    }
+
+    if (value.includes('telegram')) {
+      return 'bi bi-telegram';
+    }
+
+    if (value.includes('email')) {
+      return 'bi bi-envelope';
+    }
+
+    return 'bi bi-link-45deg';
+  },
+
+  setYear() {
+    const year =
+      qs('#footerYear');
+
+    if (year) {
+      year.textContent =
+        new Date().getFullYear();
+    }
+  }
+};
+
+function toBoolean(value) {
+  return value === true ||
+    value === 'true' ||
+    value === 'TRUE' ||
+    value === 1 ||
+    value === '1';
+}
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => Guest.init()
+);
+</script>
+
+</body>
+</html>
